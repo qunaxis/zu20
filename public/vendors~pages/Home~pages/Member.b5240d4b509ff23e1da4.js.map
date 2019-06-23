@@ -1,1 +1,0 @@
-{"version":3,"file":"vendors~pages/Home~pages/Member.b5240d4b509ff23e1da4.js","sources":["webpack:///./node_modules/antd/es/time-picker/locale/en_US.js"],"sourcesContent":["var locale = {\n  placeholder: 'Select time'\n};\nexport default locale;"],"mappings":"AAGA","sourceRoot":""}

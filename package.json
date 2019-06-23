@@ -12,7 +12,9 @@
   "scripts": {
     "prestart": "npm run -s build",
     "start": "node dist/index.js",
+    "start-ssl": "node dist/index.js",
     "dev": "nodemon src/index.js --exec \"node -r dotenv/config -r babel-register\"",
+    "dev-ssl": "nodemon src/https.js --exec \"node -r dotenv/config -r babel-register\"",
     "clean": "rimraf dist",
     "build": "npm run clean && mkdir -p dist && babel src -s -D -d dist",
     "test": "jest --watch",
@@ -39,8 +41,12 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "morgan": "^1.9.1",
+    "nodemailer": "^6.2.1",
+    "pg": "^7.11.0",
+    "pg-hstore": "^2.3.3",
     "pug": "^2.0.3",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.6.3",
+    "sequelize": "^5.8.11"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

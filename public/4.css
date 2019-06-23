@@ -1,0 +1,114 @@
+.cta-screen_masters {
+  background-image: url("/img/masters.png");
+  background-position: center center;
+  color: #ffffff !important;
+}
+
+.cta-btns {
+  margin-top: 48px;
+  margin-top: 3rem;
+  width: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.cta-btns .btn {
+  margin-bottom: 16px;
+  margin-bottom: 1rem;
+}
+
+.ant-steps-item-finish .ant-steps-item-icon {
+  background: #58B758;
+  border-color: #58B758;
+}
+
+.ant-steps-item-finish .ant-steps-item-icon .ant-steps-icon {
+  color: white;
+}
+
+.ant-steps-item-finish > .ant-steps-item-content > .ant-steps-item-title::after {
+  background-color: #222222;
+}
+
+.ant-steps-item-process .ant-steps-item-icon {
+  background: #222222;
+  border-color: #222222;
+}
+
+.ant-steps-item-wait > .ant-steps-item-content > .ant-steps-item-title {
+  font-weight: 500;
+}
+
+.ant-steps-item-process > .ant-steps-item-content > .ant-steps-item-title {
+  font-weight: 600;
+}
+
+.ant-steps-item-finish > .ant-steps-item-content > .ant-steps-item-title {
+  font-weight: 500;
+}
+
+.masters-registration {
+  color: #222222;
+  text-align: left;
+  background-color: white;
+  border-radius: 8px;
+  padding: 64px 48px;
+  padding: 4rem 3rem;
+  margin-top: 96px;
+  margin-top: 6rem;
+}
+
+.masters-registration h1 {
+  font-size: 3em;
+}
+
+.masters-registration p.subheader {
+  text-align: center;
+  margin-bottom: 48px;
+  margin-bottom: 3rem;
+}
+
+.steps-content {
+  margin-top: 32px;
+  margin-top: 2rem;
+  margin-bottom: 32px;
+  margin-bottom: 2rem;
+}
+
+.steps-action .btn {
+  width: auto;
+  font-size: 12.8px;
+  font-size: .8rem;
+}
+
+.ant-tag {
+  display: inline-block;
+}
+
+.ant-tag-checkable:first-child {
+  font-weight: 600;
+}
+
+.ant-tag-checkable-checked {
+  background-color: #58B758;
+  border-radius: 8px;
+}
+
+.antd-pro-tag-select-trigger {
+  font-size: 14px;
+  color: #8e8e8e !important;
+}
+
+.statistic {
+  margin-top: 32px;
+  margin-top: 2rem;
+}
+
+.ant-card-body {
+  border-radius: 8px !important;
+}
+
+
+
+/*# sourceMappingURL=4.css.map*/

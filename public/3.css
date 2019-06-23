@@ -1,0 +1,201 @@
+.first-screen {
+  position: relative;
+}
+
+.first-screen:after {
+  background-image: url("/img/divider.svg");
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 150px;
+}
+
+.cta-screen_home {
+  background-image: url("/img/landing-first.jpg");
+  background-position: center center;
+}
+
+.cta-screen_last {
+  background-image: url("/img/landing-last.jpg");
+  background-position: center right;
+}
+
+.second-screen h2 {
+  margin-top: 128px;
+  margin-top: 8rem;
+  margin-bottom: 128px;
+  margin-bottom: 8rem;
+}
+
+.second-screen .about {
+  margin-bottom: 128px;
+  margin-bottom: 8rem;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.second-screen .about h3 {
+  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
+}
+
+.second-screen .about:nth-child(even) {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.second-screen .about:nth-child(even) .about__text {
+  margin-left: 8.3333%;
+}
+
+.second-screen .about:nth-child(odd) .about__img {
+  margin-left: 8.3333%;
+}
+
+.third-screen {
+  background-image: url("/img/how-it-works.png");
+  background-size: cover;
+}
+
+.third-screen .process-wrapper {
+  background-color: #ffffff;
+  border-radius: .5rem;
+  margin-top: 128px;
+  margin-top: 8rem;
+  margin-bottom: 128px;
+  margin-bottom: 8rem;
+  padding: 128px 64px;
+  padding: 8rem 4rem;
+}
+
+.third-screen .process-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  text-align: center;
+}
+
+.third-screen .process__step {
+  width: 30%;
+  margin-top: 64px;
+  margin-top: 4rem;
+  position: relative;
+}
+
+.third-screen .process__step__number {
+  position: absolute;
+  top: 0;
+  left: 32px;
+  left: 2rem;
+  font-weight: 200;
+  font-size: 64px;
+  font-size: 4rem;
+  color: #c4c4c4;
+}
+
+.third-screen .process__icon {
+  width: 128px;
+  width: 8rem;
+  margin-bottom: 32px;
+  margin-bottom: 2rem;
+}
+
+.third-screen .process__header {
+  font-size: 32px;
+  font-size: 2rem;
+  margin-bottom: 16px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.fourth-screen h2 {
+  margin-top: 128px;
+  margin-top: 8rem;
+}
+
+.feedbacks {
+  margin-top: 128px;
+  margin-top: 8rem;
+}
+
+.feedback {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 64px;
+  margin-bottom: 4rem;
+}
+
+.feedback .author {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.feedback .author__img {
+  width: 128px;
+  width: 8rem;
+  height: 128px;
+  height: 8rem;
+  border-radius: 50%;
+}
+
+.feedback .author__label {
+  margin-left: 32px;
+  margin-left: 2rem;
+}
+
+.feedback .author__name {
+  font-size: 2em;
+  font-weight: 600;
+}
+
+.feedback .author__problem {
+  font-size: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #c4c4c4;
+  text-transform: uppercase;
+}
+
+.feedback__text {
+  margin-top: 32px;
+  margin-top: 2rem;
+  text-align: center;
+  font-weight: 300;
+  padding: 0 32px;
+  padding: 0 2rem;
+}
+
+
+
+/*# sourceMappingURL=3.css.map*/

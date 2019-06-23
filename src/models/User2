@@ -1,0 +1,28 @@
+import Sequelize from 'sequelize'
+const { Model } = Sequelize
+
+class User extends Model {
+    constructor(props) {
+        super(props)
+        this.init({
+            id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV1 },
+            firstname: Sequelize.STRING,
+            secondname: Sequelize.STRING,
+            patronymic: Sequelize.STRING,
+            passSerial: Sequelize.NUMBER,
+            passNumber: Sequelize.NUMBER,
+            email: Sequelize.STRING,
+            phoneMain: Sequelize.NUMBER,
+            phoneAdditional: Sequelize.NUMBER,
+            services: Sequelize.TEXT,
+            password: Sequelize.STRING,
+            passwordConfirm: Sequelize.STRING,
+            }, { 
+                props.sequelize, 
+                modelName: 'user' 
+            }
+        )
+    }
+}
+
+export default User
