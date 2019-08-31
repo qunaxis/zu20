@@ -9,12 +9,12 @@ import nodemailer from 'nodemailer'
 //     }
 // }
 const settings = {
-    host: 'mail.nic.ru',
+    host: 'smtp.yandex.ru',
     port: '465',
     secure: true,
     auth: {
         user: 'site@allservice.team',
-        pass: 'Site123123',
+        pass: 'TopSiteByTopPeople123',
     }
 }
 
@@ -37,7 +37,7 @@ class Email {
         let message = {
             from: 'Сайт ALLSERVICE <site@allservice.team>',
             // to: 'qunaxis@gmail.com',
-            to: 'qunaxis@gmail.com',
+            to: 'all@allservice.team',
             subject: `${theme} #${data.number}`,
             text: 'Откройте письмо в почтовом клиенте, поддерживающем HTML.',
             html: html,
@@ -93,8 +93,7 @@ class Email {
                 <td>${data.phoneMain}</td>
                 <td>${data.phoneAdditional}</td>                
                 <td>${data.services}</td>                
-                <td>${data.password}</td>                
-                <td>${data.passwordConfirm}</td>                
+                <td>${data.password}</td>              
                 <td>${data.userAgreement}</td>                
                 <td>${data.dataProcessed}</td>                
                 </tr></tbody>
