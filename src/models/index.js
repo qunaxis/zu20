@@ -6,17 +6,24 @@ let basename  = path.basename(__filename)
 // let config    = require(__dirname + '/../config/config.js')[env]
 let db        = {}
 
-const { NODE_ENV, DEV_DB_URI, DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_BASE, DB_SSL } = process.env
+const { FIRST_START, NODE_ENV, DEV_DB_URI, DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_BASE, DB_SSL } = process.env
 
+// let sequelize = {}
 let sequelize = {}
 
 if (NODE_ENV == 'production') {
-	sequelize = new Sequelize(DB_BASE, DB_USER, DB_PASS, {
-		host: DB_HOST,
-		port: DB_PORT,
-		dialect: DB_DIALECT,
-		dialectOptions: { ssl: DB_SSL }
-	})
+	try {
+    sequelize = new Sequelize('as', 'qunaxis', 'Diman222319', {
+      host: 'rc1b-3to2wlk3cs3kkt0a.mdb.yandexcloud.net',
+      port: 6432,
+      dialect: 'postgres',
+      dialectOptions: {
+        ssl: true
+      }
+    })
+	} catch(error) {
+		console.error(error)
+	}	
 }
 
 if (NODE_ENV == 'dev') {
@@ -65,7 +72,10 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 
-// db.sequelize.sync({ force: true })
-db.sequelize.sync()
+if (FIRST_START == 'true') {
+  db.sequelize.sync({ force: true })
+} else {
+  db.sequelize.sync()
+}
 
 module.exports = db

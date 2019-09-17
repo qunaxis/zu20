@@ -27,9 +27,23 @@ app.use(express.static(path.join(__dirname, '../public')))
 app.use(express.static(path.join(__dirname, '../docs')))
 
 
-app.get('/politics', (req, res, next) => {
-  res.sendFile('Политика конфиденциальности и защиты информации.pdf', { root: path.join(__dirname, '../docs') })
+app.get('/docs/pd', (req, res, next) => {
+  res.sendFile(`pd.pdf`, { root: path.join(__dirname, `../docs`) })
 })
+app.get('/docs/offer', (req, res, next) => {
+  res.sendFile(`offer.pdf`, { root: path.join(__dirname, `../docs`) })
+})
+app.get('/docs/politics', (req, res, next) => {
+  res.sendFile(`politics.pdf`, { root: path.join(__dirname, `../docs`) })
+})
+
+// app.get('/docs', (req, res, next) => {
+//   const docPath = `..${req.baseUrl + req.path}`
+//   // const docName = `..${req.path}.pdf`
+//   console.log(req)
+//   // console.log(docPath)
+//   res.download(path.join(__dirname, `..${req.path}`), `${req.query.name}.pdf`)
+// })
 
 // SEND SPA TO CLIENT + CLIENT ROUTING :)
 app.get('*', (req, res, next) => {

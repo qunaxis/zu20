@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     password: Sequelize.STRING,
     passwordConfirm: Sequelize.STRING,  
     userAgreement: { type: Sequelize.BOOLEAN, defaultValue: true },  
-    dataProcessed: { type: Sequelize.BOOLEAN, defaultValue: true }
+    dataProcessed: { type: Sequelize.BOOLEAN, defaultValue: true },
+    offerAgreement: { type: Sequelize.BOOLEAN, defaultValue: true },  
   }
 )
 

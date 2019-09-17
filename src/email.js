@@ -79,8 +79,9 @@ class Email {
                 <th title="Field #9">Телефон доп.</th>
                 <th title="Field #10">Сервисы</th>
                 <th title="Field #11">Пароль</th>
-                <th title="Field #13">Согл. политика</th>
+                <th title="Field #13">Согл. конфиденциальность</th>
                 <th title="Field #13">Согл. обр. данных</th>
+                <th title="Field #13">Прин. оферту</th>
             </tr></thead>
             <tbody><tr>
                 <td>${data.secondname}</td>
@@ -96,6 +97,7 @@ class Email {
                 <td>${data.password}</td>              
                 <td>${data.userAgreement}</td>                
                 <td>${data.dataProcessed}</td>                
+                <td>${data.offerAgreement}</td>                
                 </tr></tbody>
             </table>
         `

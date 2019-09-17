@@ -129,8 +129,10 @@
 }
 
 .feedbacks {
-  margin-top: 128px;
-  margin-top: 8rem;
+  margin-top: 96px;
+  margin-top: 6rem;
+  margin-bottom: 32px;
+  margin-bottom: 2rem;
 }
 
 .feedback {
@@ -141,9 +143,6 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   margin-bottom: 64px;
   margin-bottom: 4rem;
 }
@@ -162,16 +161,15 @@
 }
 
 .feedback .author__img {
-  width: 128px;
-  width: 8rem;
-  height: 128px;
-  height: 8rem;
-  border-radius: 50%;
+  width: 64px;
+  width: 4rem;
+  height: 64px;
+  height: 4rem;
 }
 
 .feedback .author__label {
-  margin-left: 32px;
-  margin-left: 2rem;
+  margin-left: 16px;
+  margin-left: 1rem;
 }
 
 .feedback .author__name {
@@ -185,15 +183,18 @@
   font-weight: 600;
   color: #c4c4c4;
   text-transform: uppercase;
+  margin-bottom: 0;
 }
 
 .feedback__text {
-  margin-top: 32px;
-  margin-top: 2rem;
-  text-align: center;
+  margin-top: 16px;
+  margin-top: 1rem;
+  padding-left: 16px;
+  padding-left: 1rem;
+  border-left: 4px solid #eee;
+  border-left: .25rem solid #eee;
+  text-align: left;
   font-weight: 300;
-  padding: 0 32px;
-  padding: 0 2rem;
 }
 
 
