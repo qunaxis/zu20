@@ -3,7 +3,7 @@ import Sequelize from 'sequelize'
 module.exports = (sequelize, DataTypes) => {
   let User = sequelize.define('User', {
     id: { type: Sequelize.UUID, primaryKey: true, defaultValue: Sequelize.UUIDV1 },
-    number: { type: Sequelize.INTEGER(8).ZEROFILL, autoIncrement: true },
+    number: { type: Sequelize.INTEGER, autoIncrement: true },
     firstname: Sequelize.STRING,
     secondname: Sequelize.STRING,
     patronymic:  { type: Sequelize.STRING, allowNull: true },
@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     userAgreement: { type: Sequelize.BOOLEAN, defaultValue: true },  
     dataProcessed: { type: Sequelize.BOOLEAN, defaultValue: true },
     offerAgreement: { type: Sequelize.BOOLEAN, defaultValue: true },  
+    offerAgreement: { type: Sequelize.BOOLEAN, defaultValue: true },
+    bitrixLeadId: { type: Sequelize.INTEGER, allowNull: true },
+    bitrixContactId: { type: Sequelize.INTEGER, allowNull: true },  
   }
 )
 
