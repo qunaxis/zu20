@@ -18,7 +18,12 @@
     "clean": "rimraf dist && rimraf -p",
     "build": "npm run clean && mkdir -p dist && babel src -s -D -d dist",
     "test": "jest --watch",
-    "lint": "esw -w src test"
+    "lint": "esw -w src test",
+    "db-migrate": "sequelize db:migrate",
+    "db-migrate-undo": "sequelize db:migrate:undo"
+  },
+  "yarn": {
+    "args": ["--ignore-engines"]
   },
   "keywords": [
     "express",
@@ -47,7 +52,8 @@
     "pg-hstore": "^2.3.3",
     "pug": "^2.0.3",
     "rimraf": "^2.6.3",
-    "sequelize": "^5.8.11"
+    "sequelize": "^5.19.1",
+    "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

@@ -13,12 +13,12 @@ let sequelize = {}
 
 if (NODE_ENV == 'production') {
 	try {
-    sequelize = new Sequelize('as', 'qunaxis', 'Diman222319', {
-      host: 'rc1b-3to2wlk3cs3kkt0a.mdb.yandexcloud.net',
-      port: 6432,
+    sequelize = new Sequelize(DB_BASE, DB_USER, DB_PASS, {
+      host: DB_HOST,
+      port: DB_PORT,
       dialect: 'postgres',
       dialectOptions: {
-        ssl: true
+        ssl: DB_SSL
       }
     })
 	} catch(error) {

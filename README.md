@@ -10,6 +10,12 @@ It's a small improvement over [Babel's official approach](https://github.com/bab
 
 Make sure you read the FAQ for more details and info.
 
+### NODE ENVIRONMENTS
+
+All node env used in this project contains:
+```sh
+    /etc/environment
+```
 ### Features:
 - [Express.js](https://expressjs.com/) as the web framework.
 - ES2017+ support with [Babel](https://babeljs.io/).
