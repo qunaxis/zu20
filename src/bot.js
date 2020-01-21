@@ -72,6 +72,7 @@ bot.command(`/warn`, ctx => {
     warn.reason = message.join(' ')
     // Внесение предупреждения в базу
     const warnData = setWarn(warn)
+    console.log(warnData)
     ctx.reply(`Иммун ${warnData.hash} ${warnData.firstname} ${warnData.secondname} (${warnData.faculty}) получил снижение иммунитета на ${warn.value}% по причине: ${warn.reason}`)
 })
 bot.command(`/status`, (ctx) => {
