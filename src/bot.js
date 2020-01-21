@@ -16,11 +16,12 @@ let bot = {}
 let antidot = 10
 let infected = 25
 let deadline = '23:00'
-
+let chatId = 0
 
 
 try {
     bot = new Telegraf(BOT_TOKEN, { agent: socksAgent })
+    // bot.sendMessage(chatId, '')
     console.log(`BOT IS ENABLED`)
 } catch(error) {
     console.log(error)
@@ -59,6 +60,7 @@ bot.command(`/timer`, (ctx) => {
 })
 bot.command(`/warn`, ctx => {
     let message = ctx.message.text.split(' ')
+    console.log(ctx.from)
     let warn = {
         hash: message[1],
         value: parseInt(message[2])
@@ -100,20 +102,20 @@ const setWarn = async (newWarn) => {
         fields: ['hash', 'value', 'reason', 'author'] 
     }
 
-    const user = await db.User.findAll({ where: {
+    const immun = await db.Immun.findAll({ where: {
         hash: newWarn.hash
     }})
-    console.log(user)
-    const warn = await db.Warn.create({
-        hash: newWarn.hash,
-        value: newWarn.value,
-        reason: newWarn.reason,
-        author: newWarn.author
-    }, options)
+    console.log(immun)
+    // const warn = await db.Warn.create({
+    //     hash: newWarn.hash,
+    //     value: newWarn.value,
+    //     reason: newWarn.reason,
+    //     author: newWarn.author
+    // }, options)
 
-    const userWarn = await user.addWarn(warn)
+    // const userWarn = await user.addWarn(warn)
 
-    console.log(userWarn)
+    // console.log(userWarn)
 
     // let warn = await db.Health.create({
     //     hash: newWarn.hash,
