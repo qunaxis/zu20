@@ -157,6 +157,7 @@ const dbSetup = async () => {
       // console.log(await csv.toString());
       return Promise.resolve(1)
   }
+  
   let importToDb = async (usersData) => {
     // console.log(usersData)
     let resultImmun = await db.Immun.bulkCreate(usersData, {
