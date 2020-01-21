@@ -138,13 +138,11 @@ const dbSetup = async () => {
     return Promise.resolve(usersData)
   }
   const createUrlCsv = async (usersData) => {
-      let urlData = []
-      
+      let urlData = []      
       usersData.forEach(item => {
         item.url = `zu20.herokuapp.com/${item.hash}`
         urlData.push(item)
       })
-
       let output = fs.createWriteStream(path.join(__dirname, `../../docs/QRs.zip`));
       let archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
@@ -189,12 +187,12 @@ const dbSetup = async () => {
   } 
   
   // setTimeout(importToDb, 4000)
+  if(GEN) {
   const resultGen = await gen()
   console.log(resultGen)
-  if(GEN) {
-    const resultCreateUrlCsv = await createUrlCsv(resultGen) 
+  const resultCreateUrlCsv = await createUrlCsv(resultGen) 
+    const resultImport = await importToDb(resultGen)
   }
-  const resultImport = await importToDb(resultGen)
   // resultImport = importToDb()
   resultImport ? console.log("DATA LOADED") : console.log("DATA NOT LOADED")
 }}
