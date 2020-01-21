@@ -152,7 +152,7 @@ const dbSetup = async () => {
       archive.finalize()
       const csv = new ObjectsToCsv(urlData)
       // Save to file:
-      await csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))       
+      csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))       
       // Return the CSV file as string:
       // console.log(await csv.toString());
       return Promise.resolve(1)
@@ -188,13 +188,13 @@ const dbSetup = async () => {
   
   // setTimeout(importToDb, 4000)
   if(GEN) {
-  const resultGen = await gen()
-  console.log(resultGen)
-  const resultCreateUrlCsv = await createUrlCsv(resultGen) 
+    const resultGen = await gen()
+    console.log(resultGen)
+    const resultCreateUrlCsv = await createUrlCsv(resultGen) 
     const resultImport = await importToDb(resultGen)
-  }
+    resultImport ? console.log("DATA LOADED") : console.log("DATA NOT LOADED")
+    }
   // resultImport = importToDb()
-  resultImport ? console.log("DATA LOADED") : console.log("DATA NOT LOADED")
 }}
   
 dbSetup()
