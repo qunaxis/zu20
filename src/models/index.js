@@ -97,7 +97,7 @@ const dbSetup = async () => {
   let gen = async () => {
     let usersData = []
     if (GEN) {
-      await fs.createReadStream(path.join(__dirname, '../../docs/users.csv'))
+      fs.createReadStream(path.join(__dirname, '../../docs/users.csv'))
       .pipe(csvParser({
         separator: ';',
         headers: ['id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization' ]
@@ -134,15 +134,18 @@ const dbSetup = async () => {
       .on('end', () => {
           // something   
       })
-    }  
+    } 
+    // console.log(usersData) 
     return Promise.resolve(usersData)
   }
   const createUrlCsv = async (usersData) => {
-      let urlData = []      
+      let urlData = []
+      console.log(usersData)
       usersData.forEach(item => {
         item.url = `zu20.herokuapp.com/${item.hash}`
         urlData.push(item)
       })
+
       let output = fs.createWriteStream(path.join(__dirname, `../../docs/QRs.zip`));
       let archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
@@ -152,12 +155,11 @@ const dbSetup = async () => {
       archive.finalize()
       const csv = new ObjectsToCsv(urlData)
       // Save to file:
-      csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))       
+      await csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))       
       // Return the CSV file as string:
       // console.log(await csv.toString());
       return Promise.resolve(1)
   }
-  
   let importToDb = async (usersData) => {
     // console.log(usersData)
     let resultImmun = await db.Immun.bulkCreate(usersData, {
@@ -188,14 +190,13 @@ const dbSetup = async () => {
   } 
   
   // setTimeout(importToDb, 4000)
-  if(GEN) {
-    const resultGen = await gen()
-    console.log(resultGen)
-    const resultCreateUrlCsv = await createUrlCsv(resultGen) 
-    const resultImport = await importToDb(resultGen)
-    resultImport ? console.log("DATA LOADED") : console.log("DATA NOT LOADED")
-    }
+  const resultGen = await gen()
+  console.log(resultGen)
+  const resultCreateUrlCsv = await createUrlCsv(resultGen)
+  resultCreateUrlCsv ? console.log("FILES HAS BEEN GENERATED") : console.log("FILES GENERATE ERROR")
+  const resultImport = await importToDb(resultGen)
   // resultImport = importToDb()
+  resultImport ? console.log("DATA LOADED") : console.log("DATA NOT LOADED")
 }}
   
 dbSetup()

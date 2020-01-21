@@ -99,7 +99,7 @@ const setParameter = async (newParameter, newValue) => {
 
 
 const getStatus = async() => {
-    const settings = await db.Settings.findAll()
+    const settings = await db.Setting.findAll()
     if(settings) { 
         console.log(settings.dataValues)
     } else { 
