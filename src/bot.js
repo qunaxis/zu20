@@ -108,6 +108,7 @@ const getStatus = async() => {
     }
     return Promise.resolve(settings)
 }
+
 // ДОПИСАТЬbn
 const setWarn = async (newWarn) => {
     console.log(`SET WARN: ${newWarn.hash} ${newWarn.value} ${newWarn.reason}`)
@@ -128,6 +129,7 @@ const setWarn = async (newWarn) => {
         author: newWarn.author
     }, options)
 
+    
     const warnData = {
         secondname: immun.dataValues.secondname,
         firstname: immun.dataValues.firstname,
