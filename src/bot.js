@@ -103,8 +103,8 @@ const setWarn = async (newWarn) => {
     const user = await db.User.findAll({ where: {
         hash: newWarn.hash
     }})
-
-    const warn = db.Warn.create({
+    console.log(user)
+    const warn = await db.Warn.create({
         hash: newWarn.hash,
         value: newWarn.value,
         reason: newWarn.reason,

@@ -3,37 +3,16 @@ let path      = require('path')
 let Sequelize = require('sequelize')
 let basename  = path.basename(__filename)
 import archiver from 'archiver'
-
 import csvParser from 'csv-parser'
-// import fs from 'fs'
 import { RandomHash } from 'random-hash'
 import { randomBytes } from 'crypto'
 import QRCode from 'qrcode-svg'
 import ObjectsToCsv from 'objects-to-csv'
-// let env       = process.env.NODE_ENV || 'development'
-// let config    = require(__dirname + '/../config/config.js')[env]
+
+
 let db        = {}
-
 const { FIRST_START, NODE_ENV, DATABASE_URL, GEN } = process.env
-
-// let sequelize = {}
 let sequelize = {}
-
-// try {
-//   sequelize = new Sequelize('ddqm2qob8uuafq', 'wsmaenfpkiucys', '4e8affb41d403392103d8ea5a3da99bec8c0ef02780d9c8f2bc8c2e3d14933f3', {
-//     host: 'ec2-79-125-126-205.eu-west-1.compute.amazonaws.com',
-//     port: '5432',
-//     dialect: 'postgres',
-//     dialectOptions: {
-//       ssl: true
-//     }
-//   })
-//   console.log(`DB HAS BEEN CONNECTED`)
-// } catch(error) {
-//   console.error(error)
-// }
-
-// console.log(sequelize)
 
 if (NODE_ENV == 'production') {
 	try {
@@ -59,21 +38,6 @@ try {
 }
 }
 
-// const sequelize = new Sequelize(DATABASE_URL)
-// const sequelize = new Sequelize('as', 'qunaxis', 'Diman222319', {
-//   host: 'rc1b-3to2wlk3cs3kkt0a.mdb.yandexcloud.net',
-//   port: 6432,
-//   dialect: 'postgres',
-//   dialectOptions: {
-//     ssl: true
-//   }
-// })
-
-// if (config.use_env_variable) {
-//   let sequelize = new Sequelize(process.env[config.use_env_variable], config)
-// } else {
-//   let sequelize = new Sequelize(config.database, config.username, config.password, config)
-// }
 sequelize.authenticate()
     .then(() => {
         console.log('Connection has been established successfully.')
@@ -103,120 +67,137 @@ let genHash = new RandomHash({
   charset: 'ABCDEFGHKLMNPQRSTUVXYZ0123456789',
   rng: randomBytes
 })
-let usersData = []
+
 Date.prototype.isValid = function () {
   // An invalid date object returns NaN for getTime() and NaN is the only
   // object not strictly equal to itself.
   return this.getTime() === this.getTime();
 };  
 
-if(FIRST_START) {
-  if (GEN) {
-    fs.createReadStream(path.join(__dirname, '../../docs/users.csv'))
-    .pipe(csvParser({
-      separator: ';',
-      headers: ['id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization' ]
-    }))
-    .on('data', (data) => {
-      data.id = parseInt(data.id)
-      data.hash = genHash()
-      console.log(data.hash)
-      let qr = new QRCode({
-        content: `zu20.herokuapp.com/${data.hash}`,
-        join: true,
-        padding: 4,
-        width: 256,
-        height: 256,
-        color: "#000000",
-        background: "#ffffff",
-        ecl: "M",
-      })
-      qr.save(path.join(__dirname, `../../docs/qr/${data.id + ' ' + data.secondname + ' ' + data.firstname}.svg`))
-      data.birth = new Date(data.birth.split('.').reverse().join('/'))
-      usersData.push(data)
-    })
-    .on('end', () => {
-      (async () => {
-        let urlData = []
-        
-        usersData.forEach(item => {
-          item.url = `zu20.herokuapp.com/${item.hash}`
-          urlData.push(item)
-        })
+const dbSetup = async () => {
+  db.sequelize = sequelize
+  db.Sequelize = Sequelize
+  // await db.Immun.hasOne(db.Warn, {
+  //   foreignKey: 'hash'
+  // })
+  //   // foreignKey: {name: 'hash'}
+  // // })
+  //   // foreignKey: 'hash'
+  // // })
+  // await db.Warn.belongsTo(db.Immun)
 
-        let output = fs.createWriteStream(path.join(__dirname, `../../docs/QRs.zip`));
-        let archive = archiver('zip', {
-          zlib: { level: 9 } // Sets the compression level.
-        })
-        archive.pipe(output)
-        archive.directory(path.join(__dirname, `../../docs/qr`), false)
-        archive.finalize()
-        const csv = new ObjectsToCsv(urlData)
-        // Save to file:
-        await csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))       
-        // Return the CSV file as string:
-        // console.log(await csv.toString());
-      })();
-    })
+
+  if (FIRST_START) {
+    await db.sequelize.sync({ force: true })
   } else {
-    fs.createReadStream(path.join(__dirname, '../../docs/users.csv'))
-    .pipe(csvParser({
-      separator: ';',
-      headers: ['id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization', 'hash' ]
-    }))
-    .on('data', (data) => {
-      data.id = parseInt(data.id)
-      usersData.push(data)
-    })
-    .on('end', () => {
-      
-    })
+    await db.sequelize.sync()
   }
+  if(FIRST_START) {
 
-    let importToDb = async () => {
-      let resultImmun = await db.Immun.bulkCreate(usersData, {
-        fields: ['id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization', 'hash']
-      })
-      let resultSetting = await db.Setting.bulkCreate(
-        [
-          {
-            parameter: 'infected',
-            value: '0'
-          },
-          {
-            parameter: 'timer',
-            value: '15:00'
-          },
-          {
-            parameter: 'antidot',
-            value: '0'
-          }
-        ], {
-          fields: ['parameter', 'value']
+  let gen = async () => {
+    let usersData = []
+    if (GEN) {
+      await fs.createReadStream(path.join(__dirname, '../../docs/users.csv'))
+      .pipe(csvParser({
+        separator: ';',
+        headers: ['id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization' ]
+      }))
+      .on('data', (data) => {
+        data.id = parseInt(data.id)
+        data.hash = genHash()
+        // console.log(data.hash)
+        let qr = new QRCode({
+          content: `zu20.herokuapp.com/${data.hash}`,
+          join: true,
+          padding: 4,
+          width: 256,
+          height: 256,
+          color: "#000000",
+          background: "#ffffff",
+          ecl: "M",
         })
-      // console.log(result)
-    } 
-    
-    setTimeout(importToDb, 4000)
-    setTimeout(() => {
-      if (FIRST_START) {
-        db.sequelize.sync({ force: true })
-      } else {
-        db.sequelize.sync()
-      }
-    }, 3000)
-    
-    setTimeout(() => {
-      db.User.hasMany(db.Warn, {
-        foreignKey: 'hash'
+        qr.save(path.join(__dirname, `../../docs/qr/${data.id + ' ' + data.secondname + ' ' + data.firstname}.svg`))
+        data.birth = new Date(data.birth.split('.').reverse().join('/'))
+        // console.log(data)
+        usersData.push(data)
       })
-      db.Warn.belongsTo(db.User)
-    }, 2000)  
-}
+    } else {
+      fs.createReadStream(path.join(__dirname, '../../docs/users.csv'))
+      .pipe(await csvParser({
+        separator: ';',
+        headers: ['id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization', 'hash' ]
+      }))
+      .on('data', (data) => {
+        data.id = parseInt(data.id)
+        usersData.push(data)
+      })
+      .on('end', () => {
+          // something   
+      })
+    }  
+    return Promise.resolve(usersData)
+  }
+  const createUrlCsv = async (usersData) => {
+      let urlData = []
+      
+      usersData.forEach(item => {
+        item.url = `zu20.herokuapp.com/${item.hash}`
+        urlData.push(item)
+      })
 
-
-
-db.sequelize = sequelize
-db.Sequelize = Sequelize
+      let output = fs.createWriteStream(path.join(__dirname, `../../docs/QRs.zip`));
+      let archive = archiver('zip', {
+        zlib: { level: 9 } // Sets the compression level.
+      })
+      archive.pipe(output)
+      archive.directory(path.join(__dirname, `../../docs/qr`), false)
+      archive.finalize()
+      const csv = new ObjectsToCsv(urlData)
+      // Save to file:
+      await csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))       
+      // Return the CSV file as string:
+      // console.log(await csv.toString());
+      return Promise.resolve(1)
+  }
+  let importToDb = async (usersData) => {
+    console.log(usersData)
+    let resultImmun = await db.Immun.bulkCreate(usersData, {
+      fields: ['secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization', 'hash']
+    })
+    // resultImmun ? console.log("IMMUNS DATA HAS BEEN IMPORTED") : reject(new Error('ERROR IN IMMUNS DATA IMPORT'))
+    resultImmun ? resultImmun : reject(new Error('ERROR IN IMMUNS DATA IMPORT'))
+    let resultSetting = await db.Setting.bulkCreate(
+      [
+        {
+          parameter: 'infected',
+          value: '0'
+        },
+        {
+          parameter: 'timer',
+          value: '15:00'
+        },
+        {
+          parameter: 'antidot',
+          value: '0'
+        }
+      ], {
+        fields: ['parameter', 'value']
+      })
+      resultSetting ? console.log("SETTINGS DEFAULTS HAS BEEN SETTING") : reject(new Error("ERROR IN SETTINGS DEFAULTS SETTING"))
+    // console.log(result)
+    return Promise.resolve(1)
+  } 
+  
+  // setTimeout(importToDb, 4000)
+  const resultGen = await gen()
+  console.log(resultGen)
+  const resultCreateUrlCsv = await createUrlCsv(resultGen)
+  const resultImport = await importToDb(resultGen)
+  // resultImport = importToDb()
+  resultImport ? console.log("DATA LOADED") : console.log("DATA NOT LOADED")
+}}
+  
+dbSetup()
+  // console.log(db)
 
 module.exports = db

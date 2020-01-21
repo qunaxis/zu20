@@ -2,7 +2,7 @@ import Sequelize from 'sequelize'
 
 module.exports = (sequelize, DataTypes) => {
   let Immun = sequelize.define('Immun', {
-    id: { type: Sequelize.INTEGER, primaryKey: true, defaultValue: Sequelize.INTEGER },
+    id: { type: Sequelize.INTEGER, defaultValue: Sequelize.INTEGER },
     secondname: Sequelize.STRING,
     firstname: Sequelize.STRING,
     patronymic:  { type: Sequelize.STRING, allowNull: true },
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     group: Sequelize.STRING,
     phone: Sequelize.STRING,
     organization: Sequelize.STRING,
-    hash: Sequelize.STRING,
+    hash: {type: Sequelize.STRING, primaryKey: true, allowNull: false },
   }
 )
 // module.exports = (sequelize, DataTypes) => {

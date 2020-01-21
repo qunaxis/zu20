@@ -3,13 +3,12 @@ import Sequelize from 'sequelize'
 module.exports = (sequelize, DataTypes) => {
   let Warn = sequelize.define('Warn', {
     // id: { type: Sequelize.INTEGER, primaryKey: true, defaultValue: Sequelize.INTEGER, autoIncrement: true }, // UUID или не UUID? Он ублюдский))
-    hash: { type: Sequelize.STRING, allowNull: false },
+    // hash: { type: Sequelize.STRING, allowNull: false },
     value: { type: Sequelize.INTEGER, allowNull: false },
     reason: { type: Sequelize.STRING, allowNull: false },
     author: { type: Sequelize.STRING, allowNull: false }
   }
 )
-
 
 // module.exports = (sequelize, DataTypes) => {
 //   let User = sequelize.define('User', {
