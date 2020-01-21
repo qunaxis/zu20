@@ -99,6 +99,22 @@ const setWarn = async (newWarn) => {
     const options = {
         fields: ['hash', 'value', 'reason', 'author'] 
     }
+
+    const user = await db.User.findOne({ where: {
+        hash: newWarn.hash
+    }})
+
+    const warn = db.Warn.create({
+        hash: newWarn.hash,
+        value: newWarn.value,
+        reason: newWarn.reason,
+        author: newWarn.author
+    }, options)
+
+    const userWarn = await user.addWarn(warn)
+
+    console.log(userWarn)
+
     // let warn = await db.Health.create({
     //     hash: newWarn.hash,
     //     value: newWarn.value,
@@ -111,12 +127,16 @@ const setWarn = async (newWarn) => {
     //     reason: 'Обблевался',
     //     author: 'qunaxis'
     // }, options)
-    let warn = db.Warn.create({
-        hash: newWarn.hash,
-        value: newWarn.value,
-        reason: newWarn.reason,
-        author: newWarn.author
-    }, options)
+    // let warn = db.Warn.create({
+    //     hash: newWarn.hash,
+    //     value: newWarn.value,
+    //     reason: newWarn.reason,
+    //     author: newWarn.author
+    // }, options)
+
+    // await db.User.addWarn(
+
+    // )
 
     // const { hash, value, reason, author } = newWarn
     
@@ -128,7 +148,7 @@ const setWarn = async (newWarn) => {
     // })
 
 
-    console.log(warn)
+    // console.log(warn)
     return value
 }
 

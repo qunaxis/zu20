@@ -204,7 +204,12 @@ if(FIRST_START) {
       } else {
         db.sequelize.sync()
       }
-    }, 2000)
+    }, 2000, () => {
+      db.User.hasMany(db.Warn, {
+        foreignKey: 'hash'
+      })
+      db.Warn.belongsTo(db.User)
+    })  
 }
 
 
