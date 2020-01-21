@@ -160,7 +160,7 @@ const dbSetup = async () => {
       return Promise.resolve(1)
   }
   let importToDb = async (usersData) => {
-    console.log(usersData)
+    // console.log(usersData)
     let resultImmun = await db.Immun.bulkCreate(usersData, {
       fields: ['secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization', 'hash']
     })

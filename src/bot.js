@@ -13,9 +13,9 @@ const socksAgent = new SocksAgent(`socks://${PROXY_SOCKS5_USERNAME}:${PROXY_SOCK
 
 // console.log(PROXY_SOCKS5_PASSWORD)
 let bot = {}
-let antidot = 10
-let infected = 25
-let deadline = '23:00'
+// let antidot = 10
+// let infected = 25
+// let deadline = '23:00'
 let chatId = 293233794
 
 
@@ -72,13 +72,18 @@ bot.command(`/warn`, ctx => {
     warn.reason = message.join(' ')
     // Внесение предупреждения в базу
     const warnData = setWarn(warn)
-    ctx.reply(`Иммун ${warnData.hash} ${warnData.firstname} ${warnData.secondname} получил снижение иммунитета на ${warn.value}% по причине: ${warn.reason}`)
+    ctx.reply(`Иммун ${warnData.hash} ${warnData.firstname} ${warnData.secondname} (${warnData.faculty}) получил снижение иммунитета на ${warn.value}% по причине: ${warn.reason}`)
 })
-bot.command(`/status`, (ctx) => ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${deadline}`))
+bot.command(`/status`, (ctx) => {
+    let antidot, infected, deadline
+    const settings = await db.Settings.findAll()
+    ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${deadline}`)
+})
 bot.on('sticker', (ctx) => ctx.reply('👍'))
 bot.hears('Позя лучший!', (ctx) => ctx.reply('Да пошёл ты))'))
 bot.launch()
 
+const 
 // Нужно переопределить на уровне приложения!
 const setParameter = async (newParameter, newValue) => {
     console.log(`SETTING PARAMETERS: ${newParameter}: ${newValue}`)
@@ -105,18 +110,20 @@ const setWarn = async (newWarn) => {
     const immun = await db.Immun.findOne({ where: {
         hash: newWarn.hash
     }})
-    // console.log(immun)
-    const { hash } = immun.dataValues
+    console.log(immun)
+    const iHash = immun.dataValues.hash
     const warn = await db.Warn.create({
-        hash: hash,
+        hash: iHash,
         value: newWarn.value,
         reason: newWarn.reason,
         author: newWarn.author
     }, options)
 
     const warnData = {
-        ...warn.dataValues,
-        ...immun.dataValues
+        secondname: immun.dataValues.secondname,
+        firstname: immun.dataValues.firstname,
+        faculty: immun.dataValues.faculty,
+        ...warn.dataValues
     }
 
     // const userWarn = await user.addWarn(warn)
