@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize'
 
 module.exports = (sequelize, DataTypes) => {
-  let Warns = sequelize.define('Warns', {
+  let Warn = sequelize.define('Warn', {
     // id: { type: Sequelize.INTEGER, primaryKey: true, defaultValue: Sequelize.INTEGER, autoIncrement: true }, // UUID или не UUID? Он ублюдский))
     hash: { type: Sequelize.STRING, allowNull: false },
     value: { type: Sequelize.INTEGER, allowNull: false },
@@ -40,5 +40,5 @@ module.exports = (sequelize, DataTypes) => {
 //     models.User.hasMany(models.Task)
 //   }
 
-  return Warns
+  return Warn
 }
