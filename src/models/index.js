@@ -204,14 +204,14 @@ if(FIRST_START) {
       } else {
         db.sequelize.sync()
       }
-    }, 2000)
+    }, 3000)
     
     setTimeout(() => {
       db.User.hasMany(db.Warn, {
         foreignKey: 'hash'
       })
       db.Warn.belongsTo(db.User)
-    }, 3000)  
+    }, 2000)  
 }
 
 
