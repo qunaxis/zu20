@@ -16,12 +16,12 @@ let bot = {}
 let antidot = 10
 let infected = 25
 let deadline = '23:00'
-let chatId = 0
+let chatId = 293233794
 
 
 try {
     bot = new Telegraf(BOT_TOKEN, { agent: socksAgent })
-    // bot.sendMessage(chatId, '')
+    bot.sendMessage(chatId, 'Я перезагрузился и теперь активен. Жду Ваших приказаний, сэр!')
     console.log(`BOT IS ENABLED`)
 } catch(error) {
     console.log(error)
@@ -71,8 +71,8 @@ bot.command(`/warn`, ctx => {
     message.shift()
     warn.reason = message.join(' ')
     // Внесение предупреждения в базу
-    setWarn(warn)
-    ctx.reply(`Иммун ${warn.hash} получил снижение иммунитета на ${warn.value}% по причине: ${warn.reason}`)
+    const warnData = setWarn(warn)
+    ctx.reply(`Иммун ${warnData.hash} ${warnData.firstname} ${warnData.secondname} получил снижение иммунитета на ${warn.value}% по причине: ${warn.reason}`)
 })
 bot.command(`/status`, (ctx) => ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${deadline}`))
 bot.on('sticker', (ctx) => ctx.reply('👍'))
@@ -102,16 +102,22 @@ const setWarn = async (newWarn) => {
         fields: ['hash', 'value', 'reason', 'author'] 
     }
 
-    const immun = await db.Immun.findAll({ where: {
+    const immun = await db.Immun.findOne({ where: {
         hash: newWarn.hash
     }})
-    console.log(immun)
-    // const warn = await db.Warn.create({
-    //     hash: newWarn.hash,
-    //     value: newWarn.value,
-    //     reason: newWarn.reason,
-    //     author: newWarn.author
-    // }, options)
+    // console.log(immun)
+    const { hash } = immun.dataValues
+    const warn = await db.Warn.create({
+        hash: hash,
+        value: newWarn.value,
+        reason: newWarn.reason,
+        author: newWarn.author
+    }, options)
+
+    const warnData = {
+        ...warn.dataValues,
+        ...immun.dataValues
+    }
 
     // const userWarn = await user.addWarn(warn)
 
@@ -151,7 +157,7 @@ const setWarn = async (newWarn) => {
 
 
     // console.log(warn)
-    return value
+    return warnData
 }
 
 module.exports = bot
