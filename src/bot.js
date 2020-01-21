@@ -114,7 +114,9 @@ const setWarn = async (newWarn) => {
 
     const { hash, value, reason, author } = newWarn
 
-    let warn = await db.sequelize.query(`INSERT INTO "Warns"("hash", "value", "reason", "author") VALUES ($hash, $value, $reason, $author)`)
+    let warn = await db.sequelize.query(`INSERT INTO "Warns"("hash", "value", "reason", "author") VALUES ($hash, $value, $reason, $author)`, {
+        bind: newWarn
+    })
     // let warn = db.Warn.create({
 
     //     hash: newWarn.hash,
@@ -122,7 +124,7 @@ const setWarn = async (newWarn) => {
     //     reason: newWarn.reason,
     //     author: newWarn.author
     // }, options)
-    
+
     console.log(warn)
     return value
 }
