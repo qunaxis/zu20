@@ -100,7 +100,7 @@ const setWarn = async (newWarn) => {
         fields: ['hash', 'value', 'reason', 'author'] 
     }
 
-    const user = await db.User.findOne({ where: {
+    const user = await db.User.findAll({ where: {
         hash: newWarn.hash
     }})
 
