@@ -81,8 +81,6 @@ bot.command(`/status`, (ctx) => {
 bot.on('sticker', (ctx) => ctx.reply('👍'))
 bot.hears('Позя лучший!', (ctx) => ctx.reply('Да пошёл ты))'))
 bot.launch()
-
-const 
 // Нужно переопределить на уровне приложения!
 const setParameter = async (newParameter, newValue) => {
     console.log(`SETTING PARAMETERS: ${newParameter}: ${newValue}`)
@@ -129,7 +127,7 @@ const setWarn = async (newWarn) => {
         author: newWarn.author
     }, options)
 
-    
+
     const warnData = {
         secondname: immun.dataValues.secondname,
         firstname: immun.dataValues.firstname,
