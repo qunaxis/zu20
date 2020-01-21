@@ -191,7 +191,9 @@ const dbSetup = async () => {
   // setTimeout(importToDb, 4000)
   const resultGen = await gen()
   console.log(resultGen)
-  const resultCreateUrlCsv = await createUrlCsv(resultGen)
+  if(GEN) {
+    const resultCreateUrlCsv = await createUrlCsv(resultGen) 
+  }
   const resultImport = await importToDb(resultGen)
   // resultImport = importToDb()
   resultImport ? console.log("DATA LOADED") : console.log("DATA NOT LOADED")
