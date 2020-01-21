@@ -123,7 +123,7 @@ const setWarn = async (newWarn) => {
     // newWarn.createdAt = new Date()
     // newWarn.updatedAt = new Date()
     // console.log(newWarn)
-    // let warn = await db.sequelize.query(`INSERT INTO "Warns"("hash",x "value", "reason", "author", "createdAt", "updatedAt") VALUES ($hash, $value, $reason, $author, $createdAt, $updatedAt)`, {
+    // let warn = await db.sequelize.query(`INSERT INTO "Warns"("hash", "value", "reason", "author", "createdAt", "updatedAt") VALUES ($hash, $value, $reason, $author, $createdAt, $updatedAt)`, {
     //     bind: newWarn
     // })
 
