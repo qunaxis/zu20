@@ -1,4 +1,5 @@
 const Telegraf  = require('telegraf')
+const Telegram = require('telegraf/telegram')
 const SocksAgent = require('socks5-https-client/lib/Agent')
 import db from './models/index'
 
@@ -13,6 +14,7 @@ const socksAgent = new SocksAgent(`socks://${PROXY_SOCKS5_USERNAME}:${PROXY_SOCK
 
 // console.log(PROXY_SOCKS5_PASSWORD)
 let bot = {}
+let tg = {}
 let antidot = 10
 let infected = 25
 let deadline = '23:00'
@@ -21,7 +23,8 @@ let chatId = 293233794
 
 try {
     bot = new Telegraf(BOT_TOKEN, { agent: socksAgent })
-    bot.sendMessage(chatId, 'Я перезагрузился и теперь активен. Жду Ваших приказаний, сэр!')
+    tg = new Telegram(BOT_TOKEN, { agent: socksAgent, webhookReply: true })
+    tg.sendMessage(chatId, 'Я перезагрузился и теперь активен. Жду Ваших приказаний, сэр!')
     console.log(`BOT IS ENABLED`)
 } catch(error) {
     console.log(error)
