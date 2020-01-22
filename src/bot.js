@@ -76,23 +76,25 @@ bot.command(`/warn`, ctx => {
     ctx.reply(`Иммун ${warnData.hash} ${warnData.firstname} ${warnData.secondname} (${warnData.faculty}) получил снижение иммунитета на ${warn.value}% по причине: ${warn.reason}`)
 })
 bot.command(`/status`, async (ctx) => {
-    const { antidot, infected, deadline } = await getStatus()
+    const { antidot, infected, deadline } = getStatus()
     ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${deadline}`)
 })
 bot.on('sticker', (ctx) => ctx.reply('👍'))
 bot.hears('Позя лучший!', (ctx) => ctx.reply('Да пошёл ты))'))
 bot.launch()
 // Нужно переопределить на уровне приложения!
-const setParameter = async (newParameter, newValue) => {
+const setParameter = (newParameter, newValue) => {
     console.log(`SETTING PARAMETERS: ${newParameter}: ${newValue}`)
-    let setting = await db.Setting.update({
-        parameter: newParameter,
-        value: newValue
-    }, {
-        where: {
-            parameter: newParameter
-        }
-    })
+    (async() => {
+        await db.Setting.update({
+            parameter: newParameter,
+            value: newValue
+        }, {
+            where: {
+                parameter: newParameter
+            }
+        })
+    })()
     console.log(newValue)
     return newValue
 }
