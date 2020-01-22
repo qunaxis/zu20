@@ -105,9 +105,9 @@ const getStatus = async() => {
     if(settings) { 
         console.log(settings.dataValues)
     } else { 
-        return Promise.reject() 
+        console.log('VSYO HUEVO')
     }
-    return Promise.resolve(settings)
+    return settings
 }
 
 // ДОПИСАТЬbn
