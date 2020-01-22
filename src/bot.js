@@ -58,7 +58,7 @@ bot.command(`/timer`, (ctx) => {
         ctx.reply('Для обновления: /timer 23:00')
     }
 })
-bot.command(`/warn`, ctx => {
+bot.command(`/warn`, async ctx => {
     let message = ctx.message.text.split(' ')
     console.log(ctx.from)
     let warn = {
