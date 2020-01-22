@@ -135,17 +135,15 @@ const dbSetup = async () => {
           // something   
       })
     } 
-    // console.log(usersData) 
-    return Promise.resolve(usersData)
-  }
-  const createUrlCsv = async (usersData) => {
-      let urlData = []
-      console.log(usersData)
-      usersData.forEach(item => {
+    let urlData = []
+    usersData.forEach(item => {
         item.url = `zu20.herokuapp.com/${item.hash}`
         urlData.push(item)
-      })
-
+    })
+    // console.log(usersData) 
+    return Promise.resolve(urlData)
+  }
+  const createQrs = async (usersData) => {
       let output = fs.createWriteStream(path.join(__dirname, `../../docs/QRs.zip`));
       let archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
@@ -153,12 +151,16 @@ const dbSetup = async () => {
       archive.pipe(output)
       archive.directory(path.join(__dirname, `../../docs/qr`), false)
       archive.finalize()
-      const csv = new ObjectsToCsv(urlData)
-      // Save to file:
-      await csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))       
-      // Return the CSV file as string:
-      // console.log(await csv.toString());
-      return Promise.resolve(1)
+      return Promise.resolve(urlData)
+  }
+
+  const createCsv = async (urlData) => {
+    const csv = new ObjectsToCsv(urlData)
+    // Save to file:
+    csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))       
+    // Return the CSV file as string:
+    // console.log(await csv.toString());
+    return Promise.resolve(1)
   }
   let importToDb = async (usersData) => {
     // console.log(usersData)
@@ -192,11 +194,21 @@ const dbSetup = async () => {
   // setTimeout(importToDb, 4000)
   const resultGen = await gen()
   console.log(resultGen)
-  const resultCreateUrlCsv = await createUrlCsv(resultGen)
-  resultCreateUrlCsv ? console.log("FILES HAS BEEN GENERATED") : console.log("FILES GENERATE ERROR")
+  const urlData = await createQrs(resultGen)
+  urlData ? console.log("QRS HAS BEEN GENERATED") : console.log("QRS GENERATE ERROR")
+  urlData ? console.log(urlData) : console.log("QRS GENERATE ERROR")
+  const csv = await createCsv(urlData)
+  urlData ? console.log("CSV READY") : console.log("QRS GENERATE ERROR")
+  
   const resultImport = await importToDb(resultGen)
   // resultImport = importToDb()
   resultImport ? console.log("DATA LOADED") : console.log("DATA NOT LOADED")
+
+  // gen()
+  //   .then(createQrs(data))
+  //   .then(createCsv(data))
+  //   .then(importToDb(data))
+  //   .catch(console.error(e))
 }}
   
 dbSetup()

@@ -4,8 +4,8 @@ module.exports = (sequelize, DataTypes) => {
   let Setting = sequelize.define('Setting', {
     id: { type: Sequelize.INTEGER, primaryKey: true, defaultValue: Sequelize.INTEGER, autoIncrement: true }, // UUID или не UUID? Он ублюдский))
     parameter: Sequelize.STRING,
-    value: Sequelize.STRING,
-    author: Sequelize.STRING
+    value: Sequelize.STRING
+    // author: Sequelize.STRING
     // antidot: Sequelize.STRING,
     // infected: Sequelize.STRING,
     // timer: Sequelize.STRING
