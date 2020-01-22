@@ -75,8 +75,8 @@ bot.command(`/warn`, ctx => {
     console.log(warnData)
     ctx.reply(`Иммун ${warnData.hash} ${warnData.firstname} ${warnData.secondname} (${warnData.faculty}) получил снижение иммунитета на ${warn.value}% по причине: ${warn.reason}`)
 })
-bot.command(`/status`, (ctx) => {
-    const { antidot, infected, deadline } = getStatus()
+bot.command(`/status`, async (ctx) => {
+    const { antidot, infected, deadline } = await getStatus()
     ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${deadline}`)
 })
 bot.on('sticker', (ctx) => ctx.reply('👍'))
