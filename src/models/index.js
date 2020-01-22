@@ -74,7 +74,7 @@ const importCsv = async (csvPath) => {
     const csvOptions = {
         delimiter: ';',
         noheader: true,
-        headers: ['id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization' ]
+        headers: [ 'id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization', 'hash', 'url' ]
     }
     try {
         data = await csv(csvOptions).fromFile(csvPath)
@@ -147,14 +147,16 @@ const importDataToDb = async (data) => {
 
 (async () => {
     await syncDb()
-    const csvData = await importCsv(csvPath)
-    // console.log(csvData) /* --- GOOD --- */
-    const preparedData = await prepareData(csvData)
-    // console.log(preparedData) /* --- GOOD --- */
-    const urlData = await genQrs(preparedData)
-    // console.log(urlData) /* --- GOOD --- */
-    // saveUrlCsv(urlData) /* --- GOOD --- */
-    const importedData = await importDataToDb(urlData)
+    if(FIRST_START) {
+        const csvData = await importCsv(csvPath)
+        // console.log(csvData) /* --- GOOD --- */
+        const preparedData = await prepareData(csvData)
+        // console.log(preparedData) /* --- GOOD --- */
+        const urlData = await genQrs(preparedData)
+        // console.log(urlData) /* --- GOOD --- */
+        // saveUrlCsv(urlData) /* --- GOOD --- */
+        const importedData = await importDataToDb(urlData)
+    }
     // console.log(importedData[0]) /* --- GOOD --- */
     // console.log(importedData[1]) /* --- GOOD --- */
 })()
