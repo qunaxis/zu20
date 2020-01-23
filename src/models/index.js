@@ -145,24 +145,6 @@ const importDataToDb = async (data) => {
     return [resultImmun, resultSettings]
 }
 
-(async () => {
-    await syncDb()
-    if(FIRST_START) {
-        const csvData = await importCsv(csvPath)
-        // console.log(csvData) /* --- GOOD --- */
-        const preparedData = await prepareData(csvData)
-        // console.log(preparedData) /* --- GOOD --- */
-        const urlData = await genQrs(preparedData)
-        // console.log(urlData) /* --- GOOD --- */
-        // saveUrlCsv(urlData) /* --- GOOD --- */
-        const importedData = await importDataToDb(urlData)
-        // const status = await db.getStatus()
-        // console.log(status)
-    }
-    // console.log(importedData[0]) /* --- GOOD --- */
-    // console.log(importedData[1]) /* --- GOOD --- */
-})()
-
 db.getStatus = async () => {
     const settingsArray = await db.Setting.findAll()
     let settings = {}
@@ -175,7 +157,82 @@ db.getStatus = async () => {
     }
     console.log(settings)
     return settings
-} 
+}
+
+db.setWarn = async (newWarn) => {
+    console.log(`SET WARN: ${newWarn.hash} ${newWarn.value} ${newWarn.reason}`)
+    console.log(newWarn)
+    const options = {
+        fields: ['hash', 'value', 'reason', 'author'] 
+    }
+
+    const immun = await db.Immun.findOne({ where: {
+        hash: newWarn.hash
+    }})
+    console.log(immun)
+    const iHash = immun.dataValues.hash
+    const warn = await db.Warn.create({
+        hash: iHash,
+        value: newWarn.value,
+        reason: newWarn.reason,
+        author: newWarn.author
+    }, options)
+    const warnData = {
+        hash: immun.dataValues.hash,
+        secondname: immun.dataValues.secondname,
+        firstname: immun.dataValues.firstname,
+        faculty: immun.dataValues.faculty,
+        value: warn.dataValues.value,
+        reason: warn.dataValues.reason
+    }
+    return warnData
+}
+
+// Нужно переопределить на уровне приложения!
+db.setParameter = async (newParameter, newValue) => {
+    console.log(`SETTING PARAMETERS: ${newParameter}: ${newValue}`)
+    const updatedSetting = await db.Setting.update({
+            parameter: newParameter,
+            value: newValue
+        }, {
+            where: {
+                parameter: newParameter
+            }
+        })
+    console.log(updatedSetting[0] == 1)
+    return updatedSetting[0] == 1 ? true : false
+}
+
+(async () => {
+    await syncDb()
+    if(FIRST_START) {
+        const csvData = await importCsv(csvPath)
+        // console.log(csvData)     /* --- GOOD --- */
+        const preparedData = await prepareData(csvData)
+        // console.log(preparedData) /* --- GOOD --- */
+        const urlData = await genQrs(preparedData)
+        // console.log(urlData)     /* --- GOOD --- */
+        const csvStatus = saveUrlCsv(urlData) 
+        console.log(csvStatus)      /* --- GOOD --- */
+        const importedData = await importDataToDb(urlData)
+        // const status = await db.getStatus()
+        // console.log(status) /* --- GOOD --- */
+    }
+    // const warn = await db.setWarn({ 
+        //     hash: '9T9Z2A',
+        //     value: 12,
+        //     reason: 'HUY',
+        //     author: 'qunaxis'
+        // })
+    // console.log(warn) /* --- GOOD --- */
+    // const set = await db.setParameter('timer', '22:00')
+    // console.log(set) /* --- GOOD --- */
+
+
+    // console.log(importedData[0]) /* --- GOOD --- */
+    // console.log(importedData[1]) /* --- GOOD --- */
+})()
+
 
 
 module.exports = db

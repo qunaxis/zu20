@@ -48,12 +48,12 @@ bot.command(`/antidot`, (ctx) => {
         ctx.reply('Для обновления: /antidot 54')
     }
 })
-bot.command(`/timer`, (ctx) => {
+bot.command(`/timer`, async (ctx) => {
     console.log(ctx.message)
     let message = ctx.message.text.split(' ')
     if(message[1] != undefined) {
-        let updValue = setParameter('timer', message[1])
-        ctx.reply(`Обновлено. Таймер до: ${updValue}`)
+        let updValue = await setParameter('timer', message[1])
+        updValue ? ctx.reply(`Обновлено. Таймер до: ${updValue}`) : ctx.reply(`Что-то пошло не так :()`)
     } else {
         ctx.reply('Для обновления: /timer 23:00')
     }
@@ -63,112 +63,27 @@ bot.command(`/warn`, async ctx => {
     console.log(ctx.from)
     let warn = {
         hash: message[1],
-        value: parseInt(message[2])
+        value: parseInt(message[2]),
+        author: ctx.from.username
     }
-    warn.author = ctx.from.username
     message.shift()
     message.shift()
     message.shift()
     warn.reason = message.join(' ')
     // Внесение предупреждения в базу
-    const warnData = await setWarn(warn)
+    const warnData = await db.setWarn(warn)
     console.log(warnData)
     ctx.reply(`Иммун ${warnData.hash} ${warnData.firstname} ${warnData.secondname} (${warnData.faculty}) получил снижение иммунитета на ${warn.value}% по причине: ${warn.reason}`)
 })
 bot.command(`/status`, async (ctx) => {
     const status = await db.getStatus()
     console.log(status)
-    // const { antidot, infected, deadline } = await getStatus()
+    const { antidot, infected, deadline } = await getStatus()
     ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${deadline}`)
 })
 bot.on('sticker', (ctx) => ctx.reply('👍'))
 bot.hears('Позя лучший!', (ctx) => ctx.reply('Да пошёл ты))'))
 bot.launch()
-// Нужно переопределить на уровне приложения!
-const setParameter = (newParameter, newValue) => {
-    console.log(`SETTING PARAMETERS: ${newParameter}: ${newValue}`)
-    (async() => {
-        await db.Setting.update({
-            parameter: newParameter,
-            value: newValue
-        }, {
-            where: {
-                parameter: newParameter
-            }
-        })
-    })()
-    console.log(newValue)
-    return newValue
-}
 
-
-// ДОПИСАТЬbn
-const setWarn = async (newWarn) => {
-    console.log(`SET WARN: ${newWarn.hash} ${newWarn.value} ${newWarn.reason}`)
-    console.log(newWarn)
-    const options = {
-        fields: ['hash', 'value', 'reason', 'author'] 
-    }
-
-    const immun = await db.Immun.findOne({ where: {
-        hash: newWarn.hash
-    }})
-    console.log(immun)
-    const iHash = immun.dataValues.hash
-    const warn = await db.Warn.create({
-        hash: iHash,
-        value: newWarn.value,
-        reason: newWarn.reason,
-        author: newWarn.author
-    }, options)
-
-
-    const warnData = {
-        secondname: immun.dataValues.secondname,
-        firstname: immun.dataValues.firstname,
-        faculty: immun.dataValues.faculty,
-        ...warn.dataValues
-    }
-
-    // const userWarn = await user.addWarn(warn)
-
-    // console.log(userWarn)
-
-    // let warn = await db.Health.create({
-    //     hash: newWarn.hash,
-    //     value: newWarn.value,
-    //     reason: newWarn.reason,
-    //     author: newWarn.author
-    // }, options)
-    // let warn = await db.Warn.create({
-    //     hash: 'VDS431',
-    //     value: 34,
-    //     reason: 'Обблевался',
-    //     author: 'qunaxis'
-    // }, options)
-    // let warn = db.Warn.create({
-    //     hash: newWarn.hash,
-    //     value: newWarn.value,
-    //     reason: newWarn.reason,
-    //     author: newWarn.author
-    // }, options)
-
-    // await db.User.addWarn(
-
-    // )
-
-    // const { hash, value, reason, author } = newWarn
-    
-    // newWarn.createdAt = new Date()
-    // newWarn.updatedAt = new Date()
-    // console.log(newWarn)
-    // let warn = await db.sequelize.query(`INSERT INTO "Warns"("hash", "value", "reason", "author", "createdAt", "updatedAt") VALUES ($hash, $value, $reason, $author, $createdAt, $updatedAt)`, {
-    //     bind: newWarn
-    // })
-
-
-    // console.log(warn)
-    return warnData
-}
 
 module.exports = bot
