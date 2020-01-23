@@ -173,6 +173,7 @@ db.getStatus = async () => {
     } else { 
         console.log(new Error(settings))
     }
+    console.log(settings)
     return settings
 } 
 
