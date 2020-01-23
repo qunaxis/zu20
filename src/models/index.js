@@ -156,10 +156,25 @@ const importDataToDb = async (data) => {
         // console.log(urlData) /* --- GOOD --- */
         // saveUrlCsv(urlData) /* --- GOOD --- */
         const importedData = await importDataToDb(urlData)
+        // const status = await db.getStatus()
+        // console.log(status)
     }
     // console.log(importedData[0]) /* --- GOOD --- */
     // console.log(importedData[1]) /* --- GOOD --- */
 })()
+
+db.getStatus = async () => {
+    const settingsArray = await db.Setting.findAll()
+    let settings = {}
+    if(settingsArray) { 
+        for (const setting of settingsArray) {
+            settings[setting.dataValues.parameter] = setting.dataValues.value
+        }
+    } else { 
+        console.log(new Error(settings))
+    }
+    return settings
+} 
 
 
 module.exports = db

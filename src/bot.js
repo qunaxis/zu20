@@ -76,7 +76,9 @@ bot.command(`/warn`, async ctx => {
     ctx.reply(`Иммун ${warnData.hash} ${warnData.firstname} ${warnData.secondname} (${warnData.faculty}) получил снижение иммунитета на ${warn.value}% по причине: ${warn.reason}`)
 })
 bot.command(`/status`, async (ctx) => {
-    const { antidot, infected, deadline } = await getStatus()
+    const status = await db.getStatus()
+    console.log(status)
+    // const { antidot, infected, deadline } = await getStatus()
     ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${deadline}`)
 })
 bot.on('sticker', (ctx) => ctx.reply('👍'))
@@ -99,16 +101,6 @@ const setParameter = (newParameter, newValue) => {
     return newValue
 }
 
-
-const getStatus = async() => {
-    const settings = await db.Setting.findAll()
-    if(settings) { 
-        console.log(settings.dataValues)
-    } else { 
-        console.log('VSYO HUEVO')
-    }
-    return settings.dataValues
-}
 
 // ДОПИСАТЬbn
 const setWarn = async (newWarn) => {
