@@ -61,7 +61,7 @@ Object.keys(db).forEach(modelName => {
 })
 
 const syncDb = async () => {
-    if (FIRST_START) {
+    if (FIRST_START === 'TRUE') {
         await db.sequelize.sync({ force: true })
     } else {
         await db.sequelize.sync()

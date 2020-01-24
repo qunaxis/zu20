@@ -25,16 +25,17 @@ app.use(express.static(path.join(__dirname, '../public')))
 app.use(express.static(path.join(__dirname, '../docs')))
 
 app.get('/:hash', async (req, res, next) => {
-  req.params['hash'] == 'favicon.ico' ? next() : null
+  const reqHash = toString(req.params['hash']).toUpperCase()
+  reqHash == 'favicon.ico' ? next() : null
   let { dataValues } = await db.Immun.findOne({
     where: {
-      hash: req.params['hash']
+      hash: reqHash
     }
   })
   let immun = dataValues
   console.log(immun)
   let status = await db.getStatus()
-  let immunitet = await db.getImmunitet(req.params['hash'])
+  let immunitet = await db.getImmunitet(reqHash)
   console.log(immunitet)
   // app.get('/', async (req, res) => {
   // let data = await db.Immun.findAll({
