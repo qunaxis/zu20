@@ -52,7 +52,7 @@ app.get('/:hash', async (req, res) => {
     passport: {
       secondname: immun.secondname,
       firstname: immun.firstname,
-      birth: `${immun.birth.toLocaleString('ru-RU', {
+      birth: `${immun.birth.toLocaleString('ru', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
