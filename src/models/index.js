@@ -219,7 +219,7 @@ db.getImmunitet = async (immunHash) => {
             hash: immunHash
         }
     })
-    console.log(immun[0])
+    console.log(immun)
     return immun[0].dataValues.value
 }
 
