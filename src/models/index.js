@@ -214,7 +214,7 @@ db.getImmunitet = async (immunHash) => {
     //         db.sequelize.fn('SUM', db.sequelize.col('value'))
     //     ],
     // })
-    const immun = await db.sequelize.query(`SELECT "hash", SUM("value") FROM "Warns" AS "Warn" WHERE "Warn"."hash" = $hash GROUP BY "hash"`, {
+    const immun = await db.sequelize.query(`SELECT "hash", SUM("value") as "immunitet" FROM "Warns" AS "Warn" WHERE "Warn"."hash" = $hash GROUP BY "hash"`, {
         bind: {
             hash: immunHash
         }
@@ -223,7 +223,7 @@ db.getImmunitet = async (immunHash) => {
 
     let result = []
     if (immun[1].rowCount > 0) { // Если варны есть
-        result = immun[1].rows[0].value
+        result = immun[0][0].immunitet
     } else {
         result = 100
     }

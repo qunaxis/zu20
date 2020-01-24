@@ -205,15 +205,31 @@ db.setParameter = async (newParameter, newValue) => {
 };
 
 db.getImmunitet = async immunHash => {
-    const immun = db.Warn.findAll({
-        where: {
+    // const immun = await db.Warn.findAll({
+    //     where: {
+    //         hash: immunHash
+    //     },
+    //     group: ['hash'],
+    //     attributes: [
+    //         'hash',
+    //         db.sequelize.fn('SUM', db.sequelize.col('value'))
+    //     ],
+    // })
+    const immun = await db.sequelize.query(`SELECT "hash", SUM("value") as "immunitet" FROM "Warns" AS "Warn" WHERE "Warn"."hash" = $hash GROUP BY "hash"`, {
+        bind: {
             hash: immunHash
-        },
-        group: ['hash'],
-        attributes: ['hash', db.sequelize.fn('SUM', db.sequelize.col('value'))]
+        }
     });
     console.log(immun);
-    return 100;
+
+    let result = [];
+    if (immun[1].rowCount > 0) {
+        // Если варны есть
+        result = immun[0][0].immunitet;
+    } else {
+        result = 100;
+    }
+    return result;
 };
 
 (async () => {
@@ -238,6 +254,7 @@ db.getImmunitet = async immunHash => {
     //     author: 'qunaxis'
     // })
     // console.log(warn) /* --- GOOD --- */
+    // const set = await db.setParameter('timer', '22:00')
     // const set = await db.setParameter('timer', '22:00')
     // console.log(set) /* --- GOOD --- */
 

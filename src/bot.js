@@ -37,7 +37,7 @@ bot.command(`/warn`, async ctx => {
     let message = ctx.message.text.split(' ')
     // console.log(ctx.from)
     let warn = {
-        hash: message[1],
+        hash: message[1].toUpperCase(),
         value: parseInt(message[2]),
         author: ctx.from.username
     }

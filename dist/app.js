@@ -53,15 +53,16 @@ app.use(_express2.default.static(_path2.default.join(__dirname, '../docs')));
 
 app.get('/:hash', async (req, res, next) => {
   req.params['hash'] == 'favicon.ico' ? next() : null;
-  let data = await _index2.default.Immun.findOne({
+  let { dataValues } = await _index2.default.Immun.findOne({
     where: {
       hash: req.params['hash']
     }
   });
-  let immun = data;
+  let immun = dataValues;
   console.log(immun);
   let status = await _index2.default.getStatus();
   let immunitet = await _index2.default.getImmunitet(req.params['hash']);
+  console.log(immunitet);
   // app.get('/', async (req, res) => {
   // let data = await db.Immun.findAll({
   //   where: {
@@ -69,7 +70,7 @@ app.get('/:hash', async (req, res, next) => {
   //   }
   // })
 
-  data = {
+  const data = {
     title: 'ZU20',
     // message: 'gnlkjf',
     immunitet: immunitet,
