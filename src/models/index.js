@@ -203,6 +203,10 @@ db.setParameter = async (newParameter, newValue) => {
     return updatedSetting[0] == 1 ? true : false
 }
 
+db.getImmunitet = async () => {
+    return 100
+}
+
 (async () => {
     await syncDb()
     if(FIRST_START) {

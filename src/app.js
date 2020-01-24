@@ -30,9 +30,10 @@ app.get('/:hash', async (req, res) => {
       hash: req.params['hash']
     }
   })
-  let immun = data.dataValues
+  let immun = data
+  console.log(immun)
   let status = await db.getStatus()
-
+  let immunitet = await db.getImmunitet()
   // app.get('/', async (req, res) => {
   // let data = await db.Immun.findAll({
   //   where: {
@@ -43,7 +44,7 @@ app.get('/:hash', async (req, res) => {
   data = {
     title: 'ZU20',
     // message: 'gnlkjf',
-    immunitet: 85,
+    immunitet: immunitet,
     antidot: status.antidot,
     infected: status.infected,
     timer: status.timer,
@@ -51,8 +52,11 @@ app.get('/:hash', async (req, res) => {
     passport: {
       secondname: immun.secondname,
       firstname: immun.firstname,
-      patronimyc: immun.patronimyc,
-      birth: immun.birth,
+      birth: `${immun.birthtoLocaleString('ru-RU', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })}`,
       faculty: immun.faculty,
       group: immun.group,
       organization: immun.organization,
