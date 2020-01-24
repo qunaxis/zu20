@@ -22,17 +22,9 @@ bot.help(ctx => ctx.reply('Команды:\n/status для получения т
 
 // Info commands
 bot.command('/status', async ctx => {
-    const settingsArray = await db.Setting.findAll()
-    let settings = {}
-    if(settingsArray) { 
-        for (const setting of settingsArray) {
-            settings[setting.dataValues.parameter] = setting.dataValues.value
-        }
-    } else { 
-        console.log(new Error(settings))
-    }
-    const { antidot, infected, deadline } = settings
-    await ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${deadline}`)
+    const settings = await db.getStatus()
+    const { antidot, infected, timer } = settings
+    await ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${timer}`)
 })
 
 
