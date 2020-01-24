@@ -28,7 +28,7 @@ try {
 }
 bot.start((ctx) => ctx.reply('Привет!\nЯ создан для обновления информации в профилях иммунов.\n\n/help - список команд'))
 bot.help((ctx) => ctx.reply('Команды:\n/status для получения текущего положения дел в мире\n/infected [%] - установить долю инфицированных\n/antidot [%] - установить % готовности антидота\n/timer [XX:XX] - установить время дедлайна'))
-bot.command(`/infected`, (ctx) => {
+bot.command(`/infected`, async (ctx) => {
     console.log(ctx.message)
     let message = ctx.message.text.split(' ')
     if(message[1] != undefined) {
@@ -38,7 +38,7 @@ bot.command(`/infected`, (ctx) => {
         ctx.reply('Для обновления: /infected 54')
     }
 })
-bot.command(`/antidot`, (ctx) => {
+bot.command(`/antidot`, async (ctx) => {
     console.log(ctx.message)
     let message = ctx.message.text.split(' ')
     if(message[1] != undefined) {
