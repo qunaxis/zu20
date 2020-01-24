@@ -204,7 +204,7 @@ db.setParameter = async (newParameter, newValue) => {
 }
 
 db.getImmunitet = async (immunHash) => {
-    const immun = db.Warn.findAll({
+    const immun = await db.Warn.findAll({
         where: {
             hash: immunHash
         },
@@ -214,8 +214,8 @@ db.getImmunitet = async (immunHash) => {
             db.sequelize.fn('SUM', db.sequelize.col('value'))
         ],
     })
-    console.log(immun)
-    return immun.value
+    console.log(immun[0])
+    return immun[0].dataValues.value
 }
 
 (async () => {
