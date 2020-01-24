@@ -79,7 +79,7 @@ bot.command(`/timer`, async (ctx) => {
 
 
 setTimeout(
-    bot.launch(), 4000
+    () => bot.launch(), 4000
 )
 
 
