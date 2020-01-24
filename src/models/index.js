@@ -68,6 +68,7 @@ const syncDb = async () => {
     }
 }
 
+console.log(toString('huy').toUpperCase())
 
 const importCsv = async (csvPath) => {
     let data = {}
