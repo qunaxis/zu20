@@ -1,40 +1,67 @@
-import express from 'express'
-import path from 'path'
-import logger from 'morgan'
-import bodyParser from 'body-parser'
-import cors from 'cors'
-import db from './models/index'
-import bot from './bot'
+'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-const app = express()
+var _express = require('express');
 
-app.use(cors())
-app.disable('x-powered-by')
+var _express2 = _interopRequireDefault(_express);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+var _morgan = require('morgan');
+
+var _morgan2 = _interopRequireDefault(_morgan);
+
+var _bodyParser = require('body-parser');
+
+var _bodyParser2 = _interopRequireDefault(_bodyParser);
+
+var _cors = require('cors');
+
+var _cors2 = _interopRequireDefault(_cors);
+
+var _index = require('./models/index');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _bot = require('./bot');
+
+var _bot2 = _interopRequireDefault(_bot);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const app = (0, _express2.default)();
+
+app.use((0, _cors2.default)());
+app.disable('x-powered-by');
 
 // View engine setup
-app.set('views', path.join(__dirname, '../views'))
-app.set('view engine', 'pug')
+app.set('views', _path2.default.join(__dirname, '../views'));
+app.set('view engine', 'pug');
 
-app.use(logger('dev', {
+app.use((0, _morgan2.default)('dev', {
   skip: () => app.get('env') === 'test'
-}))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static(path.join(__dirname, '../public')))
-app.use(express.static(path.join(__dirname, '../docs')))
+}));
+app.use(_bodyParser2.default.json());
+app.use(_bodyParser2.default.urlencoded({ extended: false }));
+app.use(_express2.default.static(_path2.default.join(__dirname, '../public')));
+app.use(_express2.default.static(_path2.default.join(__dirname, '../docs')));
 
 app.get('/:hash', async (req, res, next) => {
-  req.params['hash'] == 'favicon.ico' ? next() : null
-  let data = await db.Immun.findOne({
+  req.params['hash'] == 'favicon.ico' ? next() : null;
+  let data = await _index2.default.Immun.findOne({
     where: {
       hash: req.params['hash']
     }
-  })
-  let immun = data.dataValues
-  console.log(immun)
-  let status = await db.getStatus()
-  let immunitet = await db.getImmunitet(req.params['hash'])
+  });
+  let immun = data;
+  console.log(immun);
+  let status = await _index2.default.getStatus();
+  let immunitet = await _index2.default.getImmunitet(req.params['hash']);
   // app.get('/', async (req, res) => {
   // let data = await db.Immun.findAll({
   //   where: {
@@ -73,11 +100,11 @@ app.get('/:hash', async (req, res, next) => {
       organization: 'Статус Н.И.М.Б.',
       phone: 'Телефон'
     }
-  }
-  console.log(data)
-  res.render('index', data)
+  };
+  console.log(data);
+  res.render('index', data);
   // res.render('index', { title: 'Hey', message: data[0].dataValues.secondname});
-})
+});
 
 // const data = fs.readFileSync(path.join(__dirname, '../docs/users.csv'), 'utf8')
 // let genHash = new RandomHash({
@@ -110,10 +137,7 @@ app.get('/:hash', async (req, res, next) => {
 //   });
 
 
-
-
 // console.log(hashedUsers)
-
 
 
 // db.User.bulkCreate()
@@ -125,23 +149,19 @@ app.get('/:hash', async (req, res, next) => {
 
 // console.log(array)
 
-  // columns: ['id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization' ]
+// columns: ['id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization' ]
 
 app.get('/docs/hash', (req, res, next) => {
-  res.sendFile(`hash.csv`, { root: path.join(__dirname, `../docs`) })
-})
+  res.sendFile(`hash.csv`, { root: _path2.default.join(__dirname, `../docs`) });
+});
 app.get('/docs/qrs', (req, res, next) => {
-  res.sendFile(`QRs.zip`, { root: path.join(__dirname, `../docs`) })
-})
-
-
-
+  res.sendFile(`QRs.zip`, { root: _path2.default.join(__dirname, `../docs`) });
+});
 
 // app.get('/gethuy', (req, res, next) => {
 //   // res.sendFile('index.html', { root: path.join(__dirname, '../public') })
 //   res.json({ get: "huy" })
 // })
-
 
 
 // SEND SPA TO CLIENT + CLIENT ROUTING :)
@@ -158,18 +178,18 @@ app.get('/docs/qrs', (req, res, next) => {
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found')
-  err.status = 404
-  next(err)
-})
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
 // Error handler
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-  res
-    .status(err.status || 500)
-    .render('error', {
-      message: err.message
-    })
-})
+app.use((err, req, res, next) => {
+  // eslint-disable-line no-unused-vars
+  res.status(err.status || 500).render('error', {
+    message: err.message
+  });
+});
 
-export default app
+exports.default = app;
+//# sourceMappingURL=app.js.map
