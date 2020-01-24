@@ -21,8 +21,8 @@ bot.start(ctx => ctx.reply('Привет!\nЯ создан для обновле
 bot.help(ctx => ctx.reply('Команды:\n/status для получения текущего положения дел в мире\n/infected [%] - установить долю инфицированных\n/antidot [%] - установить % готовности антидота\n/timer [XX:XX] - установить время дедлайна'))
 
 // Info commands
-bot.command('/status', ctx => {
-    const status = db.getStatus()
+bot.command('/status', async ctx => {
+    const status = await db.getStatus()
     console.log(status)
     ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${deadline}`)
 })
