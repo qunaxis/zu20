@@ -22,7 +22,8 @@ bot.help(ctx => ctx.reply('Команды:\n/status для получения т
 
 // Info commands
 bot.command('/status', ctx => {
-    const { antidot, infected, deadline } = db.getStatus()
+    const status = db.getStatus()
+    console.log(status)
     ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${deadline}`)
 })
 
