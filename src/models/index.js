@@ -215,7 +215,7 @@ db.getImmunitet = async (immunHash) => {
         ],
     })
     console.log(immun)
-    return 100
+    return immun.value
 }
 
 (async () => {
