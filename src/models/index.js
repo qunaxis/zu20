@@ -205,14 +205,14 @@ db.setParameter = async (newParameter, newValue) => {
 
 db.getImmunitet = async (hash) => {
     const immun = db.Warn.findAll({
-        attributes: {
-            include: [
-                db.sequelize.fn('SUM', db.sequelize.col('value'))
-            ]
-        },
         where: {
             hash: hash
-        }
+        },
+        group: ['hash'],
+        attributes: [
+            'hash',
+            db.sequelize.fn('SUM', db.sequelize.col('value'))
+        ],
     })
     console.log(immun)
     return 100

@@ -24,7 +24,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, '../public')))
 app.use(express.static(path.join(__dirname, '../docs')))
 
-app.get('/:hash', async (req, res) => {
+app.get('/:hash', async (req, res, next) => {
+  req.params['hash'] == 'favicon.ico' ? next() : null
   let data = await db.Immun.findOne({
     where: {
       hash: req.params['hash']
