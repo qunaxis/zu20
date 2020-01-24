@@ -222,8 +222,8 @@ db.getImmunitet = async (immunHash) => {
     console.log(immun)
 
     let result = []
-    if (immun[0] == 0) {
-        result = immun[0].dataValues.value
+    if (immun[1].rowCount > 0) { // Если варны есть
+        result = immun[1].rows[0].value
     } else {
         result = 100
     }
