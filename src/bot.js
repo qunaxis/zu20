@@ -8,13 +8,18 @@ const { BOT_TOKEN } = process.env
 let bot = {}
 let chatId = 293233794 // Мой ИД для уведомлений
 
-try {
-    bot = new Telegraf(BOT_TOKEN, { webhookReply: false })
-    bot.telegram.sendMessage(chatId, 'Я перезагрузился и теперь активен. Жду Ваших приказаний, сэр!')
-    console.log(`BOT IS ENABLED`)
-} catch(error) {
-    console.log(error)
-}
+setTimeout(
+    () => {
+        try {
+            bot = new Telegraf(BOT_TOKEN, { webhookReply: false })
+            bot.telegram.sendMessage(chatId, 'Я перезагрузился и теперь активен. Жду Ваших приказаний, сэр!')
+            console.log(`BOT IS ENABLED`)
+        } catch(error) {
+            console.log(error)
+        }
+    }, 3000
+)
+
 
 // Base commands
 bot.start(ctx => ctx.reply('Привет!\nЯ создан для обновления информации в профилях иммунов.\n\n/help - список команд'))
