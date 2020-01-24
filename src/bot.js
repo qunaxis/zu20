@@ -50,9 +50,9 @@ bot.command(`/infected`, async (ctx) => {
     let message = ctx.message.text.split(' ')
     if(message[1] != undefined) {
         let updValue = await db.setParameter('infected', message[1])
-        ctx.reply(`Обновлено. Инфицированных: ${updValue}%`)
+        await ctx.reply(`Обновлено. Инфицированных: ${updValue}%`)
     } else {
-        ctx.reply('Для обновления: /infected 54')
+        await ctx.reply('Для обновления: /infected 54')
     }
 })
 bot.command(`/antidot`, async (ctx) => {
@@ -62,7 +62,7 @@ bot.command(`/antidot`, async (ctx) => {
         let updValue = await db.setParameter('infected', message[1])
         await ctx.reply(`Обновлено. /status для просмотра текущих параметров.`)
     } else {
-        ctx.reply('Для обновления: /antidot 54')
+        await ctx.reply('Для обновления: /antidot 54')
     }
 })
 bot.command(`/timer`, async (ctx) => {
