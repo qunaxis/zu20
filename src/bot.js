@@ -9,7 +9,7 @@ let bot = {}
 let chatId = 293233794 // Мой ИД для уведомлений
 
 try {
-    bot = new Telegraf(BOT_TOKEN)
+    bot = new Telegraf(BOT_TOKEN, { webhookReply: false })
     bot.telegram.sendMessage(chatId, 'Я перезагрузился и теперь активен. Жду Ваших приказаний, сэр!')
     console.log(`BOT IS ENABLED`)
 } catch(error) {
