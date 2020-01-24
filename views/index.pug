@@ -2,29 +2,38 @@ extends layout
 
 block content
   .wrapper
+    img(src="img/logo.png" class="logo")
     .container
-      .row
+      .row.immunitet-block
         .col-6.offset-3
-          svg(xmlns='http://www.w3.org/2000/svg' version='1.1' x='0px' y='0px' viewbox='0 0 100 100' class='heart')
+          svg(xmlns='http://www.w3.org/2000/svg' version='1.1' x='0px' y='0px' viewbox='0 0 100 100' class='heart bar')
             path(fill-opacity='0' stroke-width='1' stroke='#bbb' d='M81.495,13.923c-11.368-5.261-26.234-0.311-31.489,11.032C44.74,13.612,29.879,8.657,18.511,13.923  C6.402,19.539,0.613,33.883,10.175,50.804c6.792,12.04,18.826,21.111,39.831,37.379c20.993-16.268,33.033-25.344,39.819-37.379  C99.387,33.883,93.598,19.539,81.495,13.923z')
             path#heart-path(fill-opacity='0' stroke-width='3' stroke='#ED6A5A' d='M81.495,13.923c-11.368-5.261-26.234-0.311-31.489,11.032C44.74,13.612,29.879,8.657,18.511,13.923  C6.402,19.539,0.613,33.883,10.175,50.804c6.792,12.04,18.826,21.111,39.831,37.379c20.993-16.268,33.033-25.344,39.819-37.379  C99.387,33.883,93.598,19.539,81.495,13.923z')
-        .col-6
-          #antidot
-      .row
-        .timer.col-12
-          p До полного заражения
-          p#timer
+        .col-12.immun-text
+          p.description Иммунитет #{immunitet}
+      .row.bar-block
+        .col-5
+          #infected.bar
+        .col-7.decr-cont
+          p.description Заражено населения
+      .row.bar-block
+        .col-5
+          #antidot.bar
+        .col-7.decr-cont
+          p.description Готовность антидота
+
       .row
         .passport
           b#title Паспорт НИМБ 
-          p #{hash}
+          p#hash #{hash}
         .properties
           each value, prop in passport
             .property
               .property-name #{passportTranslation[prop]}
               .property-value #{value}
-      .row
-        <p>ZU20</p>
+      .row.footer
+        p#timer
+        img(src="/img/logo_2.png" class="logo-bottom")
     //- h1= title
     //- p Это будет профиль иммуна по фамилии #{message}
 

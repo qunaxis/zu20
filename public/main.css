@@ -2,7 +2,7 @@
 body {
     padding: 0;
     margin: 0;
-    font-size: 24px;
+    font-size: 16px;
     overflow-x: hidden;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     /* min-height: 100vw; */
@@ -48,6 +48,7 @@ body {
     background-color: #fff;
     color: #000;
     border-radius: .5em;
+    font-size: 1.5rem;
     /* display: flex; */
     /* flex-wrap: wrap; */
     /* height: 100%; */
@@ -65,7 +66,7 @@ body {
 
 .property-name {
     font-size: .75em;
-    color: #555;
+    color: #888888;
     /* width: 100%; */
 }
 
@@ -73,16 +74,87 @@ body {
     /* width: 100%; */
 }
 
-.heart {
+.bar {
     /* margin: 20px; */
-    width: 50%;
-    height: 50%;
+    width: 100%;
+    height: 100%;
     /* text-align: center; */
 }
 
-.antidot {
-    margin: 20px;
-    width: 200px;
-    height: 200px;
-    position: relative;
+.progressbar-text {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, .9) !important;
+    line-height: 1;
+}
+
+/* .bar-description {
+    font-size: .5em;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+} */
+
+.description {
+    margin-bottom: 0;
+    line-height: 1;
+    font-size: 1.25rem;
+}
+
+.immunitet-block {
+    margin-bottom: 3rem;
+}
+
+.bar-block {
+    margin-bottom: 2rem;
+    align-items: center;
+}
+
+.decr-cont {
+    padding-left: 0;
+}
+
+.immun-text {
+    text-align: center;
+}
+
+.logo {
+    width: 90vw;
+    margin-bottom: 1rem;
+}
+
+.timer {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+#timer {
+    padding: .5rem;
+    /* margin-right: 1rem; */
+    /* background-color: rgba(255, 255, 255, .2); */
+    color: #FFF;
+    /* border-radius: 8px; */
+    font-weight: bold;
+    /* text-align: center; */
+    /* width: 100%; */
+    margin-bottom: 0;
+}
+
+.logo-bottom {
+    /* display: block; */
+    /* text-align: center; */
+    padding-left: 0.5em;
+    width: 20%;
+}
+
+.footer {
+    /* padding: 1rem; */
+    padding-top: 1rem;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+#hash {
+    font-size: 1.5rem;
 }

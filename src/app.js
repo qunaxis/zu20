@@ -24,38 +24,39 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, '../public')))
 app.use(express.static(path.join(__dirname, '../docs')))
 
-// app.get('/:hash', async (req, res) => {
-//   let data = await db.Immun.findAll({
-//     where: {
-//       hash: req.params['hash']
-//     }
-//   })
-//   console.log(data)
-//   res.render('index', { title: 'Hey', message: data[0].dataValues.secondname});
-// })
-app.get('/', async (req, res) => {
+app.get('/:hash', async (req, res) => {
+  let data = await db.Immun.findOne({
+    where: {
+      hash: req.params['hash']
+    }
+  })
+  let immun = data.dataValues
+  let status = await db.getStatus()
+
+  // app.get('/', async (req, res) => {
   // let data = await db.Immun.findAll({
   //   where: {
   //     hash: req.params['hash']
   //   }
   // })
-  const data = {
-    title: 'Привет',
-    message: 'gnlkjf',
-    immunitet: 99,
-    antidot: 35,
-    infected: 5,
-    timer: '22:00',
-    hash: 'GK5KD9',
+
+  data = {
+    title: 'ZU20',
+    // message: 'gnlkjf',
+    immunitet: 85,
+    antidot: status.antidot,
+    infected: status.infected,
+    timer: status.timer,
+    hash: immun.hash,
     passport: {
-      secondname: 'Подлесных',
-      firstname: 'Дмитрий',
-      patronimyc: 'Александрович',
-      birth: new Date('1999/08/06'),
-      faculty: 'Экономическая',
-      group: 'БИ-16',
-      organization: 'Администрация',
-      phone: '89046875727'
+      secondname: immun.secondname,
+      firstname: immun.firstname,
+      patronimyc: immun.patronimyc,
+      birth: immun.birth,
+      faculty: immun.faculty,
+      group: immun.group,
+      organization: immun.organization,
+      phone: immun.phone
     },
     passportTranslation: {
       secondname: 'Фамилия',

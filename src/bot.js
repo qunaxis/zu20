@@ -60,7 +60,7 @@ bot.command(`/antidot`, async (ctx) => {
     let message = ctx.message.text.split(' ')
     if(message[1] != undefined) {
         let updValue = await db.setParameter('infected', message[1])
-        await ctx.reply(`Обновлено. Готовность антидота: ${updValue}%`)
+        await ctx.reply(`Обновлено. /status для просмотра текущих параметров.`)
     } else {
         ctx.reply('Для обновления: /antidot 54')
     }
@@ -70,9 +70,9 @@ bot.command(`/timer`, async (ctx) => {
     let message = ctx.message.text.split(' ')
     if(message[1] != undefined) {
         let updValue = await db.setParameter('timer', message[1])
-        updValue ? ctx.reply(`Обновлено. Таймер до: ${updValue}`) : ctx.reply(`Что-то пошло не так :()`)
+        updValue ? await ctx.reply(`Обновлено. /status для просмотра текущих параметров.`) : await ctx.reply(`Что-то пошло не так :()`)
     } else {
-        ctx.reply('Для обновления: /timer 23:00')
+        await ctx.reply('Для обновления: /timer 23:00')
     }
 })
 
