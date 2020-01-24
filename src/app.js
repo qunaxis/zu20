@@ -33,7 +33,7 @@ app.get('/:hash', async (req, res) => {
   let immun = data
   console.log(immun)
   let status = await db.getStatus()
-  let immunitet = await db.getImmunitet()
+  let immunitet = await db.getImmunitet(req.params['hash'])
   // app.get('/', async (req, res) => {
   // let data = await db.Immun.findAll({
   //   where: {
