@@ -20,11 +20,60 @@ try {
 bot.start(ctx => ctx.reply('Привет!\nЯ создан для обновления информации в профилях иммунов.\n\n/help - список команд'))
 bot.help(ctx => ctx.reply('Команды:\n/status для получения текущего положения дел в мире\n/infected [%] - установить долю инфицированных\n/antidot [%] - установить % готовности антидота\n/timer [XX:XX] - установить время дедлайна'))
 
-// Info commands
+// Get commands
 bot.command('/status', async ctx => {
     const settings = await db.getStatus()
     const { antidot, infected, timer } = settings
     await ctx.reply(`Прогресс разработки антидота: ${antidot}%\nДоля зараженных: ${infected}%\nВремя таймера: ${timer}`)
+})
+
+// Set commands
+bot.command(`/warn`, async ctx => {
+    let message = ctx.message.text.split(' ')
+    // console.log(ctx.from)
+    let warn = {
+        hash: message[1],
+        value: parseInt(message[2]),
+        author: ctx.from.username
+    }
+    message.shift()
+    message.shift()
+    message.shift()
+    warn.reason = message.join(' ')
+    // Внесение предупреждения в базу
+    const warnData = await db.setWarn(warn)
+    console.log(warnData)
+    await ctx.reply(`Иммун ${warnData.hash} ${warnData.firstname} ${warnData.secondname} (${warnData.faculty}) получил снижение иммунитета на ${warn.value}% по причине: ${warn.reason}`)
+})
+bot.command(`/infected`, async (ctx) => {
+    console.log(ctx.message)
+    let message = ctx.message.text.split(' ')
+    if(message[1] != undefined) {
+        let updValue = await db.setParameter('infected', message[1])
+        ctx.reply(`Обновлено. Инфицированных: ${updValue}%`)
+    } else {
+        ctx.reply('Для обновления: /infected 54')
+    }
+})
+bot.command(`/antidot`, async (ctx) => {
+    console.log(ctx.message)
+    let message = ctx.message.text.split(' ')
+    if(message[1] != undefined) {
+        let updValue = await db.setParameter('infected', message[1])
+        await ctx.reply(`Обновлено. Готовность антидота: ${updValue}%`)
+    } else {
+        ctx.reply('Для обновления: /antidot 54')
+    }
+})
+bot.command(`/timer`, async (ctx) => {
+    console.log(ctx.message)
+    let message = ctx.message.text.split(' ')
+    if(message[1] != undefined) {
+        let updValue = await db.setParameter('timer', message[1])
+        updValue ? ctx.reply(`Обновлено. Таймер до: ${updValue}`) : ctx.reply(`Что-то пошло не так :()`)
+    } else {
+        ctx.reply('Для обновления: /timer 23:00')
+    }
 })
 
 
