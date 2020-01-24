@@ -223,7 +223,13 @@ db.getImmunitet = async (immunHash) => {
 
     let result = []
     if (immun[1].rowCount > 0) { // Если варны есть
-        result = immun[0][0].immunitet
+        if (immun[0][0].immunitet > 100) {
+            result = 0
+        } if (immun[0][0].immunitet > 0) {
+            result = 100 - immun[0][0].immunitet
+        } else {
+            result = 100
+        }
     } else {
         result = 100
     }
@@ -233,7 +239,7 @@ db.getImmunitet = async (immunHash) => {
 (async () => {
     await syncDb()
     console.log('\n\n\n\n\n\n\n' + FIRST_START)
-    if(FIRST_START) {
+    if(FIRST_START === 'TRUE') {
         const csvData = await importCsv(csvPath)
         // console.log(csvData)     /* --- GOOD --- */
         const preparedData = await prepareData(csvData)
