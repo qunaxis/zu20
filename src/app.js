@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, '../docs')))
 
 app.get('/:hash', async (req, res, next) => {
   req.params['hash'] == 'favicon.ico' ? next() : null
-  let upperHash = toUpperCase(req.params['params'])
+  let upperHash = req.params['params']
   let { dataValues } = await db.Immun.findOne({
     where: {
       hash: upperHash

@@ -232,6 +232,7 @@ db.getImmunitet = async (immunHash) => {
 
 (async () => {
     await syncDb()
+    console.log('\n\n\n\n\n\n\n' + FIRST_START)
     if(FIRST_START) {
         const csvData = await importCsv(csvPath)
         // console.log(csvData)     /* --- GOOD --- */
