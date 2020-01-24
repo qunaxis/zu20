@@ -207,7 +207,7 @@ db.getImmunitet = async (hash) => {
     const immun = db.Warn.findAll({
         attributes: {
             include: [
-                db.sequelize.fn('SUM', db.sequelize.col('value')), 'value'
+                db.sequelize.fn('SUM', db.sequelize.col('value'))
             ]
         },
         where: {
