@@ -219,8 +219,13 @@ db.getImmunitet = async (immunHash) => {
             hash: immunHash
         }
     })
+    let result = []
+    if (immun.length != 0) {
+        return immun[0].dataValues.value
+    } else {
+        throw new Error()
+    }
     console.log(immun)
-    return immun[0].dataValues.value
 }
 
 (async () => {
