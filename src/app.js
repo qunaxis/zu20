@@ -24,14 +24,53 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, '../public')))
 app.use(express.static(path.join(__dirname, '../docs')))
 
-app.get('/:hash', async (req, res) => {
-  let data = await db.Immun.findAll({
-    where: {
-      hash: req.params['hash']
+// app.get('/:hash', async (req, res) => {
+//   let data = await db.Immun.findAll({
+//     where: {
+//       hash: req.params['hash']
+//     }
+//   })
+//   console.log(data)
+//   res.render('index', { title: 'Hey', message: data[0].dataValues.secondname});
+// })
+app.get('/', async (req, res) => {
+  // let data = await db.Immun.findAll({
+  //   where: {
+  //     hash: req.params['hash']
+  //   }
+  // })
+  const data = {
+    title: 'Привет',
+    message: 'gnlkjf',
+    immunitet: 99,
+    antidot: 35,
+    infected: 5,
+    timer: '22:00',
+    hash: 'GK5KD9',
+    passport: {
+      secondname: 'Подлесных',
+      firstname: 'Дмитрий',
+      patronimyc: 'Александрович',
+      birth: new Date('1999/08/06'),
+      faculty: 'Экономическая',
+      group: 'БИ-16',
+      organization: 'Администрация',
+      phone: '89046875727'
+    },
+    passportTranslation: {
+      secondname: 'Фамилия',
+      firstname: 'Имя',
+      patronimyc: 'Отчество',
+      birth: 'Дата рождения',
+      faculty: 'Область специализации',
+      group: 'Код специализации',
+      organization: 'Статус Н.И.М.Б.',
+      phone: 'Телефон'
     }
-  })
+  }
   console.log(data)
-  res.render('index', { title: 'Hey', message: data[0].dataValues.secondname});
+  res.render('index', data)
+  // res.render('index', { title: 'Hey', message: data[0].dataValues.secondname});
 })
 
 // const data = fs.readFileSync(path.join(__dirname, '../docs/users.csv'), 'utf8')
