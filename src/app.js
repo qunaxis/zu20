@@ -42,7 +42,7 @@ app.get('/:hash', async (req, res, next) => {
   //   }
   // })
 
-  data = {
+  const data = {
     title: 'ZU20',
     // message: 'gnlkjf',
     immunitet: immunitet,
