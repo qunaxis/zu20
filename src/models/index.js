@@ -97,7 +97,6 @@ const prepareData = async (data) => {
     for (let item of data) {
         item.hash = genHash()
         item.birth = new Date(item.birth.split('.').reverse().join('/'))
-        item.url = `${domain}/${item.hash}`
         hashedData.push(item)
     }
     return hashedData
@@ -106,6 +105,7 @@ const prepareData = async (data) => {
 const genQrs = async (data) => {
     let urlData = []
     for (let item of data) {
+        item.url = `${domain}/${item.hash}`
         let qr = new QRCode({
             content: item.url,
             join: true,
