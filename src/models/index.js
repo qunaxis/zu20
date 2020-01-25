@@ -108,7 +108,7 @@ const genQrs = async (data) => {
     let urlData = []
     const zipPath = path.join(__dirname, `../../docs/QRs.zip`)
     for (let item of data) {
-        console.log(item)
+        // console.log(item)
         item.url = `${domain}/${item.hash}`
         let qr = new QRCode({
             content: item.url,
