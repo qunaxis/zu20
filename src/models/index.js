@@ -127,19 +127,17 @@ const genQrs = async (data) => {
             //   maxBusyTries: 100
         // }, () => console.log('OK'))  
         // await fs.mkdir(qrPath)
-        qr.save(path.join(__dirname, `../../docs/qrs/${item.id + ' ' + item.secondname + ' ' + item.firstname}.svg`), () => {
-            let output = fs.createWriteStream(zipPath)
-            let archive = archiver('zip', {
-                zlib: { level: 9 } // Sets the compression level.
-            })
-            archive.pipe(output)
-            archive.directory(path.join(__dirname, `../../docs/qrs`), false)
-            archive.finalize()
+        qr.save(path.join(__dirname, `../../docs/qrs/${item.id + ' ' + item.secondname + ' ' + item.firstname}.svg`))
+        let output = fs.createWriteStream(zipPath)
+        let archive = archiver('zip', {
+            zlib: { level: 9 } // Sets the compression level.
         })
+        archive.pipe(output)
+        archive.directory(path.join(__dirname, `../../docs/qrs`), false)
+        archive.finalize()
         urlData.push(item)
     }
     return urlData
-
 }
 
 const saveUrlCsv = async (urlData) => {
