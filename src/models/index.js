@@ -6,7 +6,8 @@ import { RandomHash } from 'random-hash'
 import { randomBytes } from 'crypto'
 import QRCode from 'qrcode-svg'
 import ObjectsToCsv from 'objects-to-csv'
-
+import archiver from 'archiver'
+import rimraf from 'rimraf'
 
 
 const { FIRST_START, NODE_ENV, DATABASE_URL } = process.env
@@ -105,6 +106,7 @@ const prepareData = async (data) => {
 const genQrs = async (data) => {
     let urlData = []
     for (let item of data) {
+        console.log(item)
         item.url = `${domain}/${item.hash}`
         let qr = new QRCode({
             content: item.url,
@@ -115,9 +117,24 @@ const genQrs = async (data) => {
             color: "#000000",
             background: "#ffffff",
             ecl: "M",
-          })
-        qr.save(path.join(__dirname, `../../docs/qrs/${item.id + ' ' + item.secondname + ' ' + item.firstname}.svg`))
-        
+        })
+        const zipPath = path.join(__dirname, `../../docs/qrs/QRs.zip`)
+        // const qrPath = path.join(__dirname, `../../docs/qrs/`)
+        // fs.rmdirSync(qrPath, { recursive: true })
+          // fs.rmdirSync(qrPath, { recursive: true })
+        // await rimraf(qrPath, {
+            //   maxBusyTries: 100
+        // }, () => console.log('OK'))  
+        // await fs.mkdir(qrPath)
+        qr.save(path.join(__dirname, `../../docs/qrs/${item.id + ' ' + item.secondname + ' ' + item.firstname}.svg`), () => {
+            let output = fs.createWriteStream(zipPath)
+            let archive = archiver('zip', {
+                zlib: { level: 9 } // Sets the compression level.
+            })
+            archive.pipe(output)
+            archive.directory(path.join(__dirname, `../../docs/qrs`), false)
+            archive.finalize()
+        })
         urlData.push(item)
     }
     return urlData

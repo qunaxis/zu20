@@ -62,7 +62,7 @@
     "pug": "^2.0.3",
     "qrcode-svg": "^1.1.0",
     "random-hash": "^4.0.1",
-    "rimraf": "^2.6.3",
+    "rimraf": "^3.0.0",
     "sequelize": "^5.21.3",
     "sequelize-cli": "^5.5.1",
     "socks5-https-client": "^1.2.1",
