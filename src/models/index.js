@@ -106,7 +106,7 @@ const prepareData = async (data) => {
 
 const genQrs = async (data) => {
     let urlData = []
-    const zipPath = path.join(__dirname, `../../docs/qrs/QRs.zip`)
+    const zipPath = path.join(__dirname, `../../docs/QRs.zip`)
     for (let item of data) {
         console.log(item)
         item.url = `${domain}/${item.hash}`
@@ -128,15 +128,15 @@ const genQrs = async (data) => {
         // }, () => console.log('OK'))  
         // await fs.mkdir(qrPath)
         qr.save(path.join(__dirname, `../../docs/qrs/${item.id + ' ' + item.secondname + ' ' + item.firstname}.svg`))
+        urlData.push(item)
     }
     let output = fs.createWriteStream(zipPath)
     let archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
     })
     archive.pipe(output)
-    archive.directory(path.join(__dirname, `../../docs/qrs`), false)
+    archive.directory(path.join(__dirname, `../../docs/`), false)
     archive.finalize()
-    urlData.push(item)
     return urlData
 }
 

@@ -12,6 +12,14 @@ var _objectsToCsv = require('objects-to-csv');
 
 var _objectsToCsv2 = _interopRequireDefault(_objectsToCsv);
 
+var _archiver = require('archiver');
+
+var _archiver2 = _interopRequireDefault(_archiver);
+
+var _rimraf = require('rimraf');
+
+var _rimraf2 = _interopRequireDefault(_rimraf);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 let fs = require('fs');
@@ -21,7 +29,8 @@ const csv = require('csvtojson');
 
 
 const { FIRST_START, NODE_ENV, DATABASE_URL } = process.env;
-const domain = `zu20.ru`;
+// const domain = `zu20.ru`
+const domain = `zu20.herokuapp.com`;
 let basename = path.basename(__filename);
 const csvPath = path.join(__dirname, '../../docs/users.csv');
 
@@ -110,7 +119,9 @@ const prepareData = async data => {
 
 const genQrs = async data => {
     let urlData = [];
+    const zipPath = path.join(__dirname, `../../docs/qrs/QRs.zip`);
     for (let item of data) {
+        console.log(item);
         item.url = `${domain}/${item.hash}`;
         let qr = new _qrcodeSvg2.default({
             content: item.url,
@@ -122,10 +133,23 @@ const genQrs = async data => {
             background: "#ffffff",
             ecl: "M"
         });
+        // const qrPath = path.join(__dirname, `../../docs/qrs/`)
+        // fs.rmdirSync(qrPath, { recursive: true })
+        // fs.rmdirSync(qrPath, { recursive: true })
+        // await rimraf(qrPath, {
+        //   maxBusyTries: 100
+        // }, () => console.log('OK'))  
+        // await fs.mkdir(qrPath)
         qr.save(path.join(__dirname, `../../docs/qrs/${item.id + ' ' + item.secondname + ' ' + item.firstname}.svg`));
-
         urlData.push(item);
     }
+    let output = fs.createWriteStream(zipPath);
+    let archive = (0, _archiver2.default)('zip', {
+        zlib: { level: 9 // Sets the compression level.
+        } });
+    archive.pipe(output);
+    archive.directory(path.join(__dirname, `../../docs/qrs`), false);
+    archive.finalize();
     return urlData;
 };
 
@@ -233,18 +257,22 @@ db.getImmunitet = async immunHash => {
 
 db.getAvgImmunitet = async () => {
 
+    // const immun = await db.sequelize.query(`
+    //     SELECT 
+    //         AVG("im.immunitet") as "im.immunitet" 
+    //     FROM (
+    //         SELECT
+    //             "hash", SUM("value") as "immunitet" 
+    //         FROM "Warns" AS "Warn"
+    //         GROUP BY "hash"
+    //     ) AS "im"`
+    // )
     const immun = await db.sequelize.query(`
-        SELECT 
-            AVG("immunitet") as "immunitet" 
-        FROM
-            SELECT
-                "hash", SUM("value") as "immunitet" 
-            FROM "Warns" AS "Warn"
-            GROUP BY "hash"`, {
-        bind: {
-            hash: immunHash
-        }
-    });
+        SELECT
+            "hash", SUM("value") as "immunitet" 
+        FROM "Warns" AS "Warn"
+            GROUP BY "hash"
+        ) AS "im"`);
     console.log(immun);
 
     let result = [];

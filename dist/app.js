@@ -54,14 +54,14 @@ app.use(_express2.default.static(_path2.default.join(__dirname, '../public')));
 app.use(_express2.default.static(_path2.default.join(__dirname, '../docs')));
 
 app.get('/', async (req, res) => {
-  const data = {};
+  let data = {};
   let status = await _index2.default.getStatus();
-  // let immunitet = await _index2.default.getAvgImmunitet();
+  // let immunitet = await db.getAvgImmunitet()
   data = {
     // antidot: status.antidot,
     // infected: status.infected,
-    immunitet: immunitet.dataValue,
     timer: status.timer
+    // immunitet: immunitet
   };
   console.log(data);
   res.render('index', data);
@@ -70,13 +70,14 @@ app.get('/', async (req, res) => {
 app.get('/:hash', async (req, res, next) => {
   const reqHash = req.params['hash'];
   req.params['hash'] == 'favicon.ico' ? next() : null;
-  let { dataValues } = await _index2.default.Immun.findOne({
+  let immun = await _index2.default.Immun.findOne({
     where: {
       hash: req.params['hash']
     }
   });
-  let immun = dataValues;
   console.log(immun);
+  immun = immun.dataValues;
+  // console.log(immun)
   let status = await _index2.default.getStatus();
   let immunitet = await _index2.default.getImmunitet(req.params['hash']);
   console.log(immunitet);
@@ -173,7 +174,7 @@ app.get('/docs/hash', (req, res, next) => {
   res.sendFile(`hash.csv`, { root: _path2.default.join(__dirname, `../docs`) });
 });
 app.get('/docs/qrs', (req, res, next) => {
-  res.sendFile(`QRs.zip`, { root: _path2.default.join(__dirname, `../docs`) });
+  res.sendFile(`QRs.zip`, { root: _path2.default.join(__dirname, `../docs/qrs`) });
 });
 
 // app.get('/gethuy', (req, res, next) => {
