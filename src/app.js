@@ -5,6 +5,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import db from './models/index'
 import bot from './bot'
+import { stat } from 'fs'
 
 
 const app = express()
@@ -23,6 +24,21 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, '../public')))
 app.use(express.static(path.join(__dirname, '../docs')))
+
+
+
+app.get('/', async(req, res) => {
+  const data = {}
+  let status = await db.getStatus()
+  let immunitet = await db.getAvgImmunitet()
+  data = {
+    antidot: status.antidot,
+    infected: status.infected,
+    immunitet: immunitet
+  }
+  console.log(data)
+  res.render('index', data)
+})
 
 app.get('/:hash', async (req, res, next) => {
   const reqHash = req.params['hash']
@@ -77,7 +93,7 @@ app.get('/:hash', async (req, res, next) => {
     }
   }
   console.log(data)
-  res.render('index', data)
+  res.render('profile', data)
   // res.render('index', { title: 'Hey', message: data[0].dataValues.secondname});
 })
 

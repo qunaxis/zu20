@@ -205,17 +205,41 @@ db.setParameter = async (newParameter, newValue) => {
 }
 
 db.getImmunitet = async (immunHash) => {
-    // const immun = await db.Warn.findAll({
-    //     where: {
-    //         hash: immunHash
-    //     },
-    //     group: ['hash'],
-    //     attributes: [
-    //         'hash',
-    //         db.sequelize.fn('SUM', db.sequelize.col('value'))
-    //     ],
-    // })
+
     const immun = await db.sequelize.query(`SELECT "hash", SUM("value") as "immunitet" FROM "Warns" AS "Warn" WHERE "Warn"."hash" = $hash GROUP BY "hash"`, {
+        bind: {
+            hash: immunHash
+        }
+    })
+    console.log(immun)
+
+    let result = []
+    if (immun[1].rowCount > 0) { // Если варны есть
+        if (immun[0][0].immunitet > 100) {
+            result = 0
+        } if (immun[0][0].immunitet > 0) {
+            result = 100 - immun[0][0].immunitet
+        } else {
+            result = 100
+        }
+    } else {
+        result = 100
+    }
+    return result
+}
+
+const getAvgImmunitet = async () => {
+    
+    const immun = await db.sequelize.query(`
+        SELECT 
+            AVG("immunitet") as "immunitet" 
+        FROM
+            SELECT
+                "hash", SUM("value") as "immunitet" 
+            FROM "Warns" AS "Warn" 
+            WHERE "Warn"."hash" = $hash 
+            GROUP BY "hash"`, 
+    {
         bind: {
             hash: immunHash
         }
