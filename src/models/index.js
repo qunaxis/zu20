@@ -10,7 +10,7 @@ import ObjectsToCsv from 'objects-to-csv'
 
 
 const { FIRST_START, NODE_ENV, DATABASE_URL } = process.env
-const domain = `zu20.herokuapp.com`
+const domain = `zu20.ru`
 let basename  = path.basename(__filename)
 const csvPath = path.join(__dirname, '../../docs/users.csv')
 
@@ -109,8 +109,8 @@ const genQrs = async (data) => {
             content: item.url,
             join: true,
             padding: 4,
-            width: 256,
-            height: 256,
+            width: 512,
+            height: 512,
             color: "#000000",
             background: "#ffffff",
             ecl: "M",
