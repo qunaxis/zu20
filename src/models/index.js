@@ -228,22 +228,25 @@ db.getImmunitet = async (immunHash) => {
     return result
 }
 
-const getAvgImmunitet = async () => {
+db.getAvgImmunitet = async () => {
     
+    // const immun = await db.sequelize.query(`
+    //     SELECT 
+    //         AVG("im.immunitet") as "im.immunitet" 
+    //     FROM (
+    //         SELECT
+    //             "hash", SUM("value") as "immunitet" 
+    //         FROM "Warns" AS "Warn"
+    //         GROUP BY "hash"
+    //     ) AS "im"`
+    // )
     const immun = await db.sequelize.query(`
-        SELECT 
-            AVG("immunitet") as "immunitet" 
-        FROM
-            SELECT
-                "hash", SUM("value") as "immunitet" 
-            FROM "Warns" AS "Warn" 
-            WHERE "Warn"."hash" = $hash 
-            GROUP BY "hash"`, 
-    {
-        bind: {
-            hash: immunHash
-        }
-    })
+        SELECT
+            "hash", SUM("value") as "immunitet" 
+        FROM "Warns" AS "Warn"
+            GROUP BY "hash"
+        ) AS "im"`
+    )
     console.log(immun)
 
     let result = []

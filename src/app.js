@@ -28,13 +28,14 @@ app.use(express.static(path.join(__dirname, '../docs')))
 
 
 app.get('/', async(req, res) => {
-  const data = {}
+  let data = {}
   let status = await db.getStatus()
-  let immunitet = await db.getAvgImmunitet()
+  // let immunitet = await db.getAvgImmunitet()
   data = {
-    antidot: status.antidot,
-    infected: status.infected,
-    immunitet: immunitet
+    // antidot: status.antidot,
+    // infected: status.infected,
+    timer: status.timer,
+    // immunitet: immunitet
   }
   console.log(data)
   res.render('index', data)

@@ -32,6 +32,8 @@ var _bot = require('./bot');
 
 var _bot2 = _interopRequireDefault(_bot);
 
+var _fs = require('fs');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const app = (0, _express2.default)();
@@ -51,7 +53,22 @@ app.use(_bodyParser2.default.urlencoded({ extended: false }));
 app.use(_express2.default.static(_path2.default.join(__dirname, '../public')));
 app.use(_express2.default.static(_path2.default.join(__dirname, '../docs')));
 
+app.get('/', async (req, res) => {
+  const data = {};
+  let status = await _index2.default.getStatus();
+  // let immunitet = await _index2.default.getAvgImmunitet();
+  data = {
+    // antidot: status.antidot,
+    // infected: status.infected,
+    immunitet: immunitet.dataValue,
+    timer: status.timer
+  };
+  console.log(data);
+  res.render('index', data);
+});
+
 app.get('/:hash', async (req, res, next) => {
+  const reqHash = req.params['hash'];
   req.params['hash'] == 'favicon.ico' ? next() : null;
   let { dataValues } = await _index2.default.Immun.findOne({
     where: {
@@ -103,7 +120,7 @@ app.get('/:hash', async (req, res, next) => {
     }
   };
   console.log(data);
-  res.render('index', data);
+  res.render('profile', data);
   // res.render('index', { title: 'Hey', message: data[0].dataValues.secondname});
 });
 

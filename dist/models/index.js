@@ -21,7 +21,7 @@ const csv = require('csvtojson');
 
 
 const { FIRST_START, NODE_ENV, DATABASE_URL } = process.env;
-const domain = `zu20.herokuapp.com`;
+const domain = `zu20.ru`;
 let basename = path.basename(__filename);
 const csvPath = path.join(__dirname, '../../docs/users.csv');
 
@@ -68,12 +68,14 @@ Object.keys(db).forEach(modelName => {
 });
 
 const syncDb = async () => {
-    if (FIRST_START) {
+    if (FIRST_START === 'TRUE') {
         await db.sequelize.sync({ force: true });
     } else {
         await db.sequelize.sync();
     }
 };
+
+// console.log(toString('huy').toUpperCase())
 
 const importCsv = async csvPath => {
     let data = {};
@@ -114,8 +116,8 @@ const genQrs = async data => {
             content: item.url,
             join: true,
             padding: 4,
-            width: 256,
-            height: 256,
+            width: 512,
+            height: 512,
             color: "#000000",
             background: "#ffffff",
             ecl: "M"
@@ -205,16 +207,7 @@ db.setParameter = async (newParameter, newValue) => {
 };
 
 db.getImmunitet = async immunHash => {
-    // const immun = await db.Warn.findAll({
-    //     where: {
-    //         hash: immunHash
-    //     },
-    //     group: ['hash'],
-    //     attributes: [
-    //         'hash',
-    //         db.sequelize.fn('SUM', db.sequelize.col('value'))
-    //     ],
-    // })
+
     const immun = await db.sequelize.query(`SELECT "hash", SUM("value") as "immunitet" FROM "Warns" AS "Warn" WHERE "Warn"."hash" = $hash GROUP BY "hash"`, {
         bind: {
             hash: immunHash
@@ -225,7 +218,45 @@ db.getImmunitet = async immunHash => {
     let result = [];
     if (immun[1].rowCount > 0) {
         // Если варны есть
-        result = immun[0][0].immunitet;
+        if (immun[0][0].immunitet > 100) {
+            result = 0;
+        }if (immun[0][0].immunitet > 0) {
+            result = 100 - immun[0][0].immunitet;
+        } else {
+            result = 100;
+        }
+    } else {
+        result = 100;
+    }
+    return result;
+};
+
+db.getAvgImmunitet = async () => {
+
+    const immun = await db.sequelize.query(`
+        SELECT 
+            AVG("immunitet") as "immunitet" 
+        FROM
+            SELECT
+                "hash", SUM("value") as "immunitet" 
+            FROM "Warns" AS "Warn"
+            GROUP BY "hash"`, {
+        bind: {
+            hash: immunHash
+        }
+    });
+    console.log(immun);
+
+    let result = [];
+    if (immun[1].rowCount > 0) {
+        // Если варны есть
+        if (immun[0][0].immunitet > 100) {
+            result = 0;
+        }if (immun[0][0].immunitet > 0) {
+            result = 100 - immun[0][0].immunitet;
+        } else {
+            result = 100;
+        }
     } else {
         result = 100;
     }
@@ -234,7 +265,8 @@ db.getImmunitet = async immunHash => {
 
 (async () => {
     await syncDb();
-    if (FIRST_START) {
+    console.log('\n\n\n\n\n\n\n' + FIRST_START);
+    if (FIRST_START === 'TRUE') {
         const csvData = await importCsv(csvPath);
         // console.log(csvData)     /* --- GOOD --- */
         const preparedData = await prepareData(csvData);

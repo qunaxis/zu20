@@ -159,3 +159,17 @@ body {
 #hash {
     font-size: 1.5rem;
 }
+
+.timer-index {
+    font-size: 256px;
+    margin: 0;
+    padding: 0;
+}
+
+.logo-index {
+    width: 35vw !important;
+}
+
+.logo-b-index {
+    width: 10vw;
+}
