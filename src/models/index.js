@@ -11,7 +11,8 @@ import rimraf from 'rimraf'
 
 
 const { FIRST_START, NODE_ENV, DATABASE_URL } = process.env
-const domain = `zu20.ru`
+// const domain = `zu20.ru`
+const domain = `zu20.herokuapp.com`
 let basename  = path.basename(__filename)
 const csvPath = path.join(__dirname, '../../docs/users.csv')
 
@@ -138,7 +139,7 @@ const genQrs = async (data) => {
         urlData.push(item)
     }
     return urlData
-    
+
 }
 
 const saveUrlCsv = async (urlData) => {
