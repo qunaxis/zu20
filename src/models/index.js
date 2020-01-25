@@ -130,6 +130,12 @@ const genQrs = async (data) => {
         qr.save(path.join(__dirname, `../../docs/qrs/${item.id + ' ' + item.secondname + ' ' + item.firstname}.svg`))
         urlData.push(item)
     }
+    return urlData
+}
+
+const saveUrlCsv = async (urlData) => {
+    const csv = new ObjectsToCsv(urlData)
+    csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))
     let output = fs.createWriteStream(zipPath)
     let archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
@@ -137,12 +143,7 @@ const genQrs = async (data) => {
     archive.pipe(output)
     archive.directory(path.join(__dirname, `../../docs/`), false)
     archive.finalize()
-    return urlData
-}
-
-const saveUrlCsv = async (urlData) => {
-    const csv = new ObjectsToCsv(urlData)
-    csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))
+    
     return true  
 }
 
