@@ -106,6 +106,7 @@ const prepareData = async (data) => {
 
 const genQrs = async (data) => {
     let urlData = []
+    const zipPath = path.join(__dirname, `../../docs/qrs/QRs.zip`)
     for (let item of data) {
         console.log(item)
         item.url = `${domain}/${item.hash}`
@@ -119,7 +120,6 @@ const genQrs = async (data) => {
             background: "#ffffff",
             ecl: "M",
         })
-        const zipPath = path.join(__dirname, `../../docs/qrs/QRs.zip`)
         // const qrPath = path.join(__dirname, `../../docs/qrs/`)
         // fs.rmdirSync(qrPath, { recursive: true })
           // fs.rmdirSync(qrPath, { recursive: true })
