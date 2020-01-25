@@ -106,7 +106,6 @@ const prepareData = async (data) => {
 
 const genQrs = async (data) => {
     let urlData = []
-    const zipPath = path.join(__dirname, `../../docs/QRs.zip`)
     for (let item of data) {
         // console.log(item)
         item.url = `${domain}/${item.hash}`
@@ -136,6 +135,8 @@ const genQrs = async (data) => {
 const saveUrlCsv = async (urlData) => {
     const csv = new ObjectsToCsv(urlData)
     csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))
+    
+    const zipPath = path.join(__dirname, `../../docs/QRs.zip`)
     let output = fs.createWriteStream(zipPath)
     let archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
