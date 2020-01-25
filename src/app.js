@@ -157,6 +157,7 @@ app.get('/docs/qrs', (req, res, next) => {
 
 
 
+
 // app.get('/gethuy', (req, res, next) => {
 //   // res.sendFile('index.html', { root: path.join(__dirname, '../public') })
 //   res.json({ get: "huy" })
