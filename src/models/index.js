@@ -138,6 +138,7 @@ const genQrs = async (data) => {
         urlData.push(item)
     }
     return urlData
+    
 }
 
 const saveUrlCsv = async (urlData) => {
