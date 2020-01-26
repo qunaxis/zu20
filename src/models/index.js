@@ -15,7 +15,6 @@ const domain = `zu20.ru`
 // const domain = `zu20.herokuapp.com`
 const domainTop = `zu20.ru`
 let basename  = path.basename(__filename)
-const csvPath = path.join(__dirname, '../../docs/users.csv')
 
 
 let db = {}
@@ -74,15 +73,29 @@ const syncDb = async () => {
 
 // console.log(toString('huy').toUpperCase())
 
-const importCsv = async (csvPath) => {
+const importCsv = async () => {
     let data = {}
-    const csvOptions = {
-        delimiter: ';',
-        noheader: true,
-        headers: [ 'id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization', 'hash', 'url' ]
+    let csvOptions = {}
+    let csvPath = ''
+    if (FIRST_START === 'TRUE') {
+        console.log('hahahaha');
+        
+        csvOptions= {
+            delimiter: ';',
+            noheader: true,
+            headers: [ 'id', 'secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization', 'hash', 'url' ]
+        }
+        csvPath = path.join(__dirname, '../../docs/users.csv')
+    } else {
+        csvOptions = {
+            delimiter: ',',
+            // noheader: true
+        }
+        csvPath = path.join(__dirname, '../../docs/hash.csv')
     }
     try {
         data = await csv(csvOptions).fromFile(csvPath)
+        // console.log(data)
         return data
     } catch (error) {
         throw new Error(error)
@@ -97,9 +110,11 @@ const genHash = new RandomHash({
 
 const prepareData = async (data) => {
     let hashedData = []
+
     for (let item of data) {
         item.hash = genHash()
         item.birth = new Date(item.birth.split('.').reverse().join('/'))
+        item.url = `${domain}/${item.hash}`
         hashedData.push(item)
     }
     return hashedData
@@ -107,9 +122,9 @@ const prepareData = async (data) => {
 
 const genQrs = async (data) => {
     let urlData = []
+    fs.mkdir(path.join(__dirname, `../../docs/qrs/`), () => console.log('Пака создана'))
     for (let item of data) {
-        // console.log(item)
-        item.url = `${domain}/${item.hash}`
+        console.log(item)
         let qr = new QRCode({
             content: item.url,
             join: true,
@@ -147,8 +162,7 @@ const createQrZip = async () => {
 
 const saveUrlCsv = async (urlData) => {
     const csv = new ObjectsToCsv(urlData)
-    csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))
-    
+    csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))    
     return true  
 }
 
@@ -291,21 +305,24 @@ db.getAvgImmunitet = async () => {
 (async () => {
     await syncDb()
     console.log('\n\n\n\n\n\n\n' + FIRST_START)
-    const csvData = await importCsv(csvPath)
-    // console.log(csvData)     /* --- GOOD --- */
-    const preparedData = await prepareData(csvData)
-    // console.log(preparedData) /* --- GOOD --- */
-    const urlData = await genQrs(preparedData)
-    // console.log(urlData)     /* --- GOOD --- */
-    const csvStatus = saveUrlCsv(urlData) 
-    console.log(csvStatus)      /* --- GOOD --- */
-    const qrsAnswer = await createQrZip()
-    console.log(qrsAnswer)
+
+    let finalData = {}
+    let csvData = {}
+    csvData = await importCsv()
     if(FIRST_START === 'TRUE') {
-        const importedData = await importDataToDb(urlData)
+        csvData = await prepareData(csvData)
+        const csvStatus = saveUrlCsv(csvData) 
+        console.log(csvStatus)      /* --- GOOD --- */
+        const importedData = await importDataToDb(csvData)
         // const status = await db.getStatus()
         // console.log(status) /* --- GOOD --- */
     }
+    // console.log(preparedData) /* --- GOOD --- */
+    console.log(csvData)     /* --- GOOD --- */
+    const qrStatus = await genQrs(csvData)
+    console.log(qrStatus)     /* --- GOOD --- */
+    const qrsAnswer = await createQrZip()
+    console.log(qrsAnswer)
     // const warn = await db.setWarn({ 
         //     hash: '9T9Z2A',
         //     value: 12,
