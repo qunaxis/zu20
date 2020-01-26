@@ -174,7 +174,7 @@ app.get('/docs/hash', (req, res, next) => {
   res.sendFile(`hash.csv`, { root: _path2.default.join(__dirname, `../docs`) });
 });
 app.get('/docs/qrs', (req, res, next) => {
-  res.sendFile(`QRs.zip`, { root: _path2.default.join(__dirname, `../docs/qrs`) });
+  res.sendFile(`QRs.zip`, { root: _path2.default.join(__dirname, `../docs`) });
 });
 
 // app.get('/gethuy', (req, res, next) => {
