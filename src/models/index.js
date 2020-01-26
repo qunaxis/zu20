@@ -11,7 +11,7 @@ import rimraf from 'rimraf'
 
 
 const { FIRST_START, NODE_ENV, DATABASE_URL } = process.env
-const domain = `zu20.ru`
+const domain = `zu20.ru`    
 // const domain = `zu20.herokuapp.com`
 const domainTop = `zu20.ru`
 let basename  = path.basename(__filename)
@@ -133,18 +133,21 @@ const genQrs = async (data) => {
     return urlData
 }
 
-const saveUrlCsv = async (urlData) => {
-    const csv = new ObjectsToCsv(urlData)
-    csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))
-    
+const createQrZip = async () => {
     const zipPath = path.join(__dirname, `../../docs/QRs.zip`)
-    let output = fs.createWriteStream(zipPath)
+    let output = fs.createWriteStream(zipPath)    
     let archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
     })
     archive.pipe(output)
     archive.directory(path.join(__dirname, `../../docs/qrs`), false)
     archive.finalize()
+    return 'YEEEEEEES' 
+}
+
+const saveUrlCsv = async (urlData) => {
+    const csv = new ObjectsToCsv(urlData)
+    csv.toDisk(path.join(__dirname, `../../docs/hash.csv`))
     
     return true  
 }
@@ -301,6 +304,8 @@ db.getAvgImmunitet = async () => {
         // const status = await db.getStatus()
         // console.log(status) /* --- GOOD --- */
     }
+    const qrsAnswer = await createQrZip()
+    console.log(qrsAnswer)
     // const warn = await db.setWarn({ 
         //     hash: '9T9Z2A',
         //     value: 12,
