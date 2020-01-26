@@ -112,9 +112,9 @@ const genQrs = async (data) => {
         let qr = new QRCode({
             content: item.url,
             join: true,
-            padding: 4,
-            width: 512,
-            height: 512,
+            padding: 7,
+            width: 170,
+            height: 170,
             color: "#000000",
             background: "#ffffff",
             ecl: "M",
@@ -142,7 +142,7 @@ const saveUrlCsv = async (urlData) => {
         zlib: { level: 9 } // Sets the compression level.
     })
     archive.pipe(output)
-    archive.directory(path.join(__dirname, `../../docs/`), false)
+    archive.directory(path.join(__dirname, `../../docs/qrs`), false)
     archive.finalize()
     
     return true  
