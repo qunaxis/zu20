@@ -318,7 +318,7 @@ db.getAvgImmunitet = async () => {
         // console.log(status) /* --- GOOD --- */
     }
     // console.log(preparedData) /* --- GOOD --- */
-    console.log(csvData)     /* --- GOOD --- */
+    // console.log(csvData)     /* --- GOOD --- */
     const qrStatus = await genQrs(csvData)
     console.log(qrStatus)     /* --- GOOD --- */
     const qrsAnswer = await createQrZip()
