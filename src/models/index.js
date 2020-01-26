@@ -124,7 +124,7 @@ const genQrs = async (data) => {
     let urlData = []
     fs.mkdir(path.join(__dirname, `../../docs/qrs/`), () => console.log('Пака создана'))
     for (let item of data) {
-        console.log(item)
+        // console.log(item)
         let qr = new QRCode({
             content: item.url,
             join: true,
@@ -168,7 +168,7 @@ const saveUrlCsv = async (urlData) => {
 
 const importDataToDb = async (data) => {
     let resultImmun = await db.Immun.bulkCreate(data, {
-        fields: ['secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization', 'hash']
+        fields: ['id','secondname', 'firstname', 'patronymic', 'birth', 'faculty', 'group', 'phone', 'organization', 'hash']
     })
       // resultImmun ? console.log("IMMUNS DATA HAS BEEN IMPORTED") : reject(new Error('ERROR IN IMMUNS DATA IMPORT'))
     resultImmun ? resultImmun : new Error(resultImmun)
