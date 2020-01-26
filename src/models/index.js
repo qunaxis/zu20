@@ -291,21 +291,21 @@ db.getAvgImmunitet = async () => {
 (async () => {
     await syncDb()
     console.log('\n\n\n\n\n\n\n' + FIRST_START)
+    const csvData = await importCsv(csvPath)
+    // console.log(csvData)     /* --- GOOD --- */
+    const preparedData = await prepareData(csvData)
+    // console.log(preparedData) /* --- GOOD --- */
+    const urlData = await genQrs(preparedData)
+    // console.log(urlData)     /* --- GOOD --- */
+    const csvStatus = saveUrlCsv(urlData) 
+    console.log(csvStatus)      /* --- GOOD --- */
+    const qrsAnswer = await createQrZip()
+    console.log(qrsAnswer)
     if(FIRST_START === 'TRUE') {
-        const csvData = await importCsv(csvPath)
-        // console.log(csvData)     /* --- GOOD --- */
-        const preparedData = await prepareData(csvData)
-        // console.log(preparedData) /* --- GOOD --- */
-        const urlData = await genQrs(preparedData)
-        // console.log(urlData)     /* --- GOOD --- */
-        const csvStatus = saveUrlCsv(urlData) 
-        console.log(csvStatus)      /* --- GOOD --- */
         const importedData = await importDataToDb(urlData)
         // const status = await db.getStatus()
         // console.log(status) /* --- GOOD --- */
     }
-    const qrsAnswer = await createQrZip()
-    console.log(qrsAnswer)
     // const warn = await db.setWarn({ 
         //     hash: '9T9Z2A',
         //     value: 12,
