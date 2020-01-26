@@ -11,9 +11,9 @@ import rimraf from 'rimraf'
 
 
 const { FIRST_START, NODE_ENV, DATABASE_URL } = process.env
-const domain = `zu20.ru`    
-// const domain = `zu20.herokuapp.com`
-const domainTop = `zu20.ru`
+// const domain = `zu20.ru`    
+const domain = `zu20.herokuapp.com`
+// const domainTop = `zu20.ru`
 let basename  = path.basename(__filename)
 
 
