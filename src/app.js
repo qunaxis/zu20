@@ -5,8 +5,8 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import db from './models/index'
 import bot from './bot'
-import { stat } from 'fs'
 
+import Intl from "intl"
 
 const app = express()
 
@@ -61,7 +61,12 @@ app.get('/:hash', async (req, res, next) => {
   //     hash: req.params['hash']
   //   }
   // })
-
+  const formatter = new Intl.DateTimeFormat("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    // weekday: 'long',
+  });
   const data = {
     title: 'ZU20',
     // message: 'gnlkjf',
@@ -73,11 +78,8 @@ app.get('/:hash', async (req, res, next) => {
     passport: {
       secondname: immun.secondname,
       firstname: immun.firstname,
-      birth: `${immun.birth.toLocaleString('ru', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      })}`,
+      patronymic: immun.patronymic,
+      birth: formatter.format(immun.birth),
       faculty: immun.faculty,
       group: immun.group,
       organization: immun.organization,
@@ -86,7 +88,7 @@ app.get('/:hash', async (req, res, next) => {
     passportTranslation: {
       secondname: 'Фамилия',
       firstname: 'Имя',
-      patronimyc: 'Отчество',
+      patronymic: 'Отчество',
       birth: 'Дата рождения',
       faculty: 'Область специализации',
       group: 'Код специализации',
