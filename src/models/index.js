@@ -10,7 +10,7 @@ import archiver from 'archiver'
 import rimraf from 'rimraf'
 
 
-const { FIRST_START, NODE_ENV, DATABASE_URL } = process.env
+const { FIRST_START, NODE_ENV, DATABASE_URL, DEFAULT_IMMUNITET } = process.env
 // const domain = `zu20.ru`    
 const domain = `zu20.herokuapp.com`
 // const domainTop = `zu20.ru`
@@ -258,13 +258,31 @@ db.getImmunitet = async (immunHash) => {
         } if (immun[0][0].immunitet > 0) {
             result = 100 - immun[0][0].immunitet
         } else {
-            result = 100
+            result = DEFAULT_IMMUNITET
         }
     } else {
-        result = 100
+        result = DEFAULT_IMMUNITET
     }
     return result
 }
+
+db.getWarnsData = async () => {
+    let result = {}
+    try {
+        const data = await db.Warn.findAll({
+            include: [{
+              model: db.Immun,
+              as: 'Immun' // specifies how we want to be able to access our joined rows on the returned data
+            }]
+        })
+        console.log(data)
+        result = data
+    } catch (error) {
+        console.log(error)
+    }
+    return result
+}
+
 
 db.getAvgImmunitet = async () => {
     
@@ -305,6 +323,8 @@ db.getAvgImmunitet = async () => {
 (async () => {
     await syncDb()
     console.log('\n\n\n\n\n\n\n' + FIRST_START)
+    
+    // await db.getWarnsData()
 
     let finalData = {}
     let csvData = {}
