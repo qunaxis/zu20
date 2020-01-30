@@ -276,7 +276,7 @@ db.getWarnsData = async () => {
             }]
         })
         console.log(data)
-        result = data
+        result = data.dataValues
     } catch (error) {
         console.log(error)
     }

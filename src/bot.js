@@ -64,7 +64,7 @@ bot.command(`/antidot`, async (ctx) => {
     console.log(ctx.message)
     let message = ctx.message.text.split(' ')
     if(message[1] != undefined) {
-        let updValue = await db.setParameter('infected', message[1])
+        let updValue = await db.setParameter('antidot', message[1])
         await ctx.reply(`Обновлено. /status для просмотра текущих параметров.`)
     } else {
         await ctx.reply('Для обновления: /antidot 54')
